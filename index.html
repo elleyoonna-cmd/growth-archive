@@ -1906,8 +1906,7 @@ function ViewMap() {
           '<div><div class="pl">' + esc(g.label) + '</div>' +
           '<div class="pc">기록 ' + g.records.length + '건 · ' + TYPES.filter(t => g.records.some(r => r.type === t.id)).map(t => t.emoji).join('') + '</div></div>' +
           '<div class="period-thumbs">' + (thumbs.length ? thumbs.map(m => '<img src="' + m.data + '" alt="">').join('') : '<span class="ph">🗒</span>') + '</div></button>';
-      }).join('') + '</div>' : emptyBox('🗓️', '기록이 쌓이면 월별·학기별·연도별로 돌아볼 수 있어요.')) +
-      '<div class="section"><button class="btn soft" style="width:100%" data-act="openCollection">📄 기간·주제 골라 모음집 만들기</button></div>';
+      }).join('') + '</div>' : emptyBox('🗓️', '기록이 쌓이면 월별·학기별·연도별로 돌아볼 수 있어요.'));
   }
   return '<div>' +
     '<div class="section-head" style="margin-top:6px"><h2>🗺️ 모아보기</h2><span class="sub">주제·시기별로 저절로 모여요</span></div>' +
@@ -1919,6 +1918,7 @@ function ViewMap() {
     '<div class="mv-tabs"><button class="' + (isTopics ? 'on' : '') + '" data-act="mvTab" data-mv="topics">주제 지도</button>' +
       '<button class="' + (!isTopics ? 'on' : '') + '" data-act="mvTab" data-mv="timeline">돌아보기 타임라인</button></div>' +
     body +
+    '<div class="section"><button class="btn soft" style="width:100%" data-act="openCollection">📄 기간·주제 골라 모음집 만들기</button></div>' +
   '</div>';
 }
 
