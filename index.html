@@ -1,0 +1,3106 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FBF6EE">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="성장 기록">
+<title>우리집 성장 기록</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>/* ===================================================================
+   우리집 성장 기록 — 스타일 (모바일 우선, PC 반응형)
+   =================================================================== */
+:root {
+  --bg: #FBF6EE;
+  --bg-2: #F4EDE2;
+  --surface: #FFFFFF;
+  --surface-2: #FFFDF9;
+  --ink: #2B2A26;
+  --ink-2: #6E685D;
+  --ink-3: #9A9285;
+  --line: #E9E0D2;
+  --line-2: #F2EBDF;
+  --accent: #2F6B5F;
+  --accent-2: #3E8C7B;
+  --accent-soft: #E4F0EC;
+  --sun: #C98A2B;
+  --sun-soft: #FBF0DA;
+  --rose: #B85C4E;
+  --rose-soft: #FAE9E5;
+  --plum: #7A5A8C;
+  --plum-soft: #F1EAF6;
+  --blue: #41698C;
+  --blue-soft: #E7EFF7;
+  --shadow: 0 1px 2px rgba(43, 42, 38, .05), 0 8px 24px -12px rgba(43, 42, 38, .18);
+  --shadow-lg: 0 18px 50px -18px rgba(43, 42, 38, .35);
+  --r: 16px;
+  --r-sm: 11px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --font: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, -apple-system, sans-serif;
+  --serif: "Nanum Myeongjo", "Apple SD Gothic Neo", Georgia, serif;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; }
+html { background: var(--bg); }
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 420px at 50% -140px, #F7EEDF 0%, transparent 70%),
+    var(--bg);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; border: 0; background: none; }
+a { color: var(--accent); }
+img { display: block; }
+h1, h2, h3, h4 { margin: 0; font-weight: 800; letter-spacing: -.02em; }
+p { margin: 0; }
+
+#app { max-width: 760px; margin: 0 auto; padding: 0 14px 96px; }
+
+/* ---------- 상단 ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 12px 2px 10px;
+  background: linear-gradient(var(--bg) 72%, rgba(251, 246, 238, .82) 100%);
+  backdrop-filter: blur(8px);
+}
+.brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.brand-logo {
+  width: 36px; height: 36px; flex: none;
+  display: grid; place-items: center;
+  background: var(--accent-soft); border-radius: 12px; font-size: 19px;
+}
+.brand-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.brand-text strong { font-size: 15px; letter-spacing: -.02em; }
+.brand-text span {
+  font-size: 11px; color: var(--ink-3); font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sync-pill {
+  flex: none; font-size: 11px; font-weight: 800; color: var(--ink-2);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 10px; white-space: nowrap;
+}
+
+/* ---------- 공통 ---------- */
+.main { min-height: 60vh; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 16px; box-shadow: var(--shadow);
+}
+.section { margin-top: 18px; }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 0 2px 8px; }
+.section-head h2 { font-size: 14.5px; }
+.section-head .sub { font-size: 11.5px; color: var(--ink-3); font-weight: 700; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border-radius: 12px; padding: 11px 14px; font-size: 14px; font-weight: 800;
+  background: var(--accent); color: #fff; border: 1px solid transparent;
+  transition: transform .06s ease, filter .12s ease;
+}
+.btn:active { transform: scale(.985); }
+.btn.ghost { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.btn.soft { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.btn.danger { background: var(--rose); color: #fff; }
+.btn.mini { padding: 7px 10px; font-size: 12px; border-radius: 10px; }
+.btn:disabled { opacity: .5; }
+.icon-btn {
+  width: 34px; height: 34px; flex: none; display: grid; place-items: center;
+  border-radius: 10px; color: var(--ink-2); font-size: 15px;
+}
+.icon-btn:hover { background: var(--line-2); }
+.hint { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+.tag-label { font-size: 11px; font-weight: 800; color: var(--ink-3); letter-spacing: .02em; }
+
+/* ---------- 홈 히어로 ---------- */
+.hero {
+  position: relative; overflow: hidden;
+  background: linear-gradient(150deg, #F3F8F4 0%, #FFFDF7 58%, #FBF1E4 100%);
+  border: 1px solid var(--line); border-radius: 22px;
+  padding: 20px 18px 18px; box-shadow: var(--shadow);
+}
+.hero::after {
+  content: ""; position: absolute; right: -40px; top: -50px; width: 170px; height: 170px;
+  background: radial-gradient(closest-side, rgba(47, 107, 95, .13), transparent);
+  border-radius: 50%;
+}
+.hero-greet { font-size: 12.5px; font-weight: 800; color: var(--accent); letter-spacing: .01em; }
+.hero h1 { font-size: 21px; line-height: 1.35; margin: 6px 0 14px; font-family: var(--serif); letter-spacing: -.03em; }
+.hero.compact { padding: 16px 16px 14px; }
+.hero.compact h1 { font-size: 17.5px; margin: 4px 0 10px; }
+.hero.compact .cta { padding: 13px 16px; font-size: 15.5px; }
+.hero h1 small { display: block; font-family: var(--font); font-size: 12.5px; font-weight: 700; color: var(--ink-2); letter-spacing: 0; margin-top: 7px; }
+.cta {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--accent); color: #fff; border-radius: 14px;
+  padding: 15px 18px; font-size: 16.5px; font-weight: 900; letter-spacing: -.01em;
+  box-shadow: 0 10px 22px -12px rgba(47, 107, 95, .8);
+}
+.cta:active { filter: brightness(.97); }
+.hero-under { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.hero-under .hint { font-size: 11.5px; }
+.linkish { font-size: 12px; font-weight: 800; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ---------- 검색/필터 ---------- */
+.tools { display: flex; gap: 8px; margin-top: 16px; align-items: center; }
+.search-box {
+  flex: 1; display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 13px; padding: 0 12px;
+}
+.search-box input { flex: 1; border: 0; background: none; outline: none; padding: 12px 0; font-size: 14px; min-width: 0; }
+.search-box .ic { font-size: 14px; color: var(--ink-3); }
+.filter-btn {
+  flex: none; display: inline-flex; align-items: center; gap: 5px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 13px;
+  padding: 12px 12px; font-size: 13px; font-weight: 800; color: var(--ink-2);
+}
+.filter-btn.on { background: var(--accent-soft); color: var(--accent); border-color: #CFE4DD; }
+.chip-row { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 2px; margin-top: 10px; scrollbar-width: none; }
+.chip-row::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none; display: inline-flex; align-items: center; gap: 4px;
+  border-radius: 999px; padding: 7px 11px; font-size: 12px; font-weight: 800;
+  background: var(--surface); border: 1px solid var(--line); color: var(--ink-2);
+  white-space: nowrap;
+}
+.chip.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.chip.soft { background: var(--line-2); border-color: transparent; color: var(--ink-2); }
+.chip.acc { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+.filter-summary { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 9px; font-size: 11.5px; color: var(--ink-3); font-weight: 700; }
+.filter-summary .fchip { background: var(--sun-soft); color: #8A601C; border-radius: 8px; padding: 3px 7px; font-weight: 800; }
+
+/* ---------- 기록 카드 ---------- */
+.timeline { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+.month-head { display: flex; align-items: center; gap: 8px; margin: 12px 2px 2px; }
+.month-head b { font-size: 12.5px; letter-spacing: -.01em; }
+.month-head span { font-size: 11px; color: var(--ink-3); font-weight: 700; }
+.month-head::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.rcard {
+  display: flex; gap: 12px; padding: 12px; border-radius: var(--r);
+  background: var(--surface); border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(43, 42, 38, .03);
+  cursor: pointer; position: relative;
+}
+.rcard:hover { border-color: #DCCFBB; }
+.rcard .thumb {
+  width: 78px; height: 78px; flex: none; border-radius: 12px; overflow: hidden;
+  background: var(--bg-2); display: grid; place-items: center; font-size: 24px; color: var(--ink-3);
+}
+.rcard .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.rbody { flex: 1; min-width: 0; }
+.rtop { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.type-chip {
+  display: inline-flex; align-items: center; gap: 3px; font-size: 10.5px; font-weight: 900;
+  border-radius: 7px; padding: 3px 6px; background: var(--line-2); color: var(--ink-2);
+}
+.type-chip.t0 { background: var(--blue-soft); color: var(--blue); }
+.type-chip.t1 { background: var(--sun-soft); color: #8A601C; }
+.type-chip.t2 { background: var(--plum-soft); color: var(--plum); }
+.type-chip.t3 { background: var(--accent-soft); color: var(--accent); }
+.rdate { font-size: 11px; color: var(--ink-3); font-weight: 700; }
+.star { margin-left: auto; font-size: 15px; color: #D9CDB8; padding: 0 2px; line-height: 1; }
+.star.on { color: #E0A32E; }
+.rcard h3 { font-size: 14.5px; margin: 4px 0 2px; line-height: 1.35; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.say {
+  font-size: 12.8px; color: var(--ink-2); line-height: 1.5;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.memo { font-size: 11.5px; color: var(--ink-3); margin-top: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+.memo b { font-size: 10px; font-weight: 900; color: var(--ink-3); background: var(--line-2); border-radius: 5px; padding: 1px 4px; margin-right: 3px; }
+.rtags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.rtag { font-size: 10.5px; font-weight: 800; color: var(--accent); }
+.rfoot { display: flex; align-items: center; gap: 8px; margin-top: 7px; flex-wrap: wrap; }
+.meta { font-size: 10.5px; font-weight: 700; color: var(--ink-3); }
+.rfoot .mini-act { font-size: 10.5px; font-weight: 900; color: var(--accent); background: var(--accent-soft); border-radius: 7px; padding: 3px 7px; }
+.badge-soft { font-size: 10px; font-weight: 900; border-radius: 6px; padding: 2px 5px; background: var(--sun-soft); color: #8A601C; }
+.badge-alone { background: var(--accent-soft); color: var(--accent); }
+
+/* ---------- 빈 화면 / 온보딩 ---------- */
+.empty {
+  text-align: center; color: var(--ink-2); font-size: 13px; line-height: 1.6;
+  background: var(--surface); border: 1px dashed #DED2C0; border-radius: var(--r);
+  padding: 30px 18px;
+}
+.empty .e { display: block; font-size: 28px; margin-bottom: 8px; }
+.onboard { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+.onboard-step {
+  display: flex; gap: 10px; align-items: flex-start; text-align: left;
+  background: var(--surface-2); border: 1px solid var(--line-2); border-radius: 12px; padding: 11px 12px;
+}
+.onboard-step .n { width: 22px; height: 22px; flex: none; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-size: 11px; font-weight: 900; }
+.onboard-step b { display: block; font-size: 13px; }
+.onboard-step span { font-size: 11.5px; color: var(--ink-3); }
+
+/* ---------- 통계 ---------- */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 13px; padding: 11px 10px; text-align: center; }
+.stat b { display: block; font-size: 17px; letter-spacing: -.02em; }
+.stat span { font-size: 10.5px; color: var(--ink-3); font-weight: 700; }
+
+/* ---------- 시트 ---------- */
+.overlay {
+  position: fixed; inset: 0; z-index: 60; background: rgba(38, 34, 28, .42);
+  display: flex; align-items: flex-end; justify-content: center;
+  animation: fadein .16s ease;
+}
+.overlay.center { align-items: center; padding: 16px; }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+.sheet {
+  width: 100%; max-width: 620px; max-height: 92vh; display: flex; flex-direction: column;
+  background: var(--surface); border-radius: 22px 22px 0 0; box-shadow: var(--shadow-lg);
+  animation: slideup .22s cubic-bezier(.22, .68, .36, 1);
+}
+.overlay.center .sheet { border-radius: 20px; max-height: 88vh; }
+@keyframes slideup { from { transform: translateY(22px); opacity: .6; } to { transform: none; opacity: 1; } }
+.sheet-grab { width: 40px; height: 4px; border-radius: 99px; background: #E2D8C7; margin: 9px auto 0; }
+.sheet-head { display: flex; align-items: center; gap: 8px; padding: 12px 14px 8px; border-bottom: 1px solid var(--line-2); }
+.sheet-head h2 { font-size: 15.5px; flex: 1; min-width: 0; }
+.sheet-body { padding: 14px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.sheet-foot { display: flex; gap: 8px; margin-top: 14px; }
+.sheet-foot .btn { flex: 1; }
+.field { margin-bottom: 13px; }
+.field > label, .field > .lab { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 900; color: var(--ink-2); margin-bottom: 6px; }
+.field > label .opt { font-size: 10px; font-weight: 700; color: var(--ink-3); background: var(--line-2); border-radius: 5px; padding: 1px 5px; }
+.input, .textarea, .select {
+  width: 100%; border: 1px solid var(--line); background: var(--surface-2);
+  border-radius: 11px; padding: 10px 12px; font-size: 14px; outline: none;
+}
+.input:focus, .textarea:focus, .select:focus { border-color: var(--accent-2); background: #fff; box-shadow: 0 0 0 3px rgba(62, 140, 123, .12); }
+.textarea { min-height: 74px; resize: vertical; line-height: 1.55; }
+.textarea.tall { min-height: 96px; }
+.row { display: flex; gap: 8px; }
+.row > * { flex: 1; min-width: 0; }
+.toggle-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.seg { display: flex; background: var(--line-2); border-radius: 11px; padding: 3px; gap: 3px; }
+.seg button { flex: 1; border-radius: 9px; padding: 8px 6px; font-size: 12.5px; font-weight: 800; color: var(--ink-2); }
+.seg button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(43, 42, 38, .12); }
+.toglio { }
+
+/* 미디어 버튼 */
+.media-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.media-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  border: 1px solid var(--line); background: var(--surface); border-radius: 13px;
+  padding: 12px 6px; font-size: 11.5px; font-weight: 800; color: var(--ink-2);
+}
+.media-btn span.i { font-size: 20px; }
+.media-btn:active { background: var(--bg-2); }
+.media-btn.rec { border-color: #E9C9C2; background: var(--rose-soft); color: var(--rose); }
+.media-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
+.media-item {
+  position: relative; width: 76px; height: 76px; border-radius: 11px; overflow: hidden;
+  border: 1px solid var(--line); background: var(--bg-2); display: grid; place-items: center;
+}
+.media-item img { width: 100%; height: 100%; object-fit: cover; }
+.media-item .fi { font-size: 11px; text-align: center; padding: 6px; line-height: 1.3; color: var(--ink-2); word-break: break-all; }
+.media-item.audio { width: 168px; height: auto; padding: 6px 6px 4px; place-items: stretch; }
+.media-item.audio audio { width: 100%; height: 30px; }
+.media-item audio { width: 76px; height: 26px; }
+.media-item .x {
+  position: absolute; top: 2px; right: 2px; width: 19px; height: 19px; border-radius: 50%;
+  background: rgba(30, 28, 24, .72); color: #fff; font-size: 10px; display: grid; place-items: center;
+}
+.rec-bar {
+  display: flex; align-items: center; gap: 10px; margin-top: 9px;
+  background: var(--rose-soft); border: 1px solid #EFD3CD; border-radius: 12px; padding: 10px 12px;
+}
+.rec-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--rose); animation: pulse 1s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+.rec-time { font-variant-numeric: tabular-nums; font-weight: 900; color: var(--rose); font-size: 13px; }
+
+/* 태그 입력 */
+.tag-pick { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag-add { display: flex; gap: 6px; margin-top: 7px; }
+.tag-add .input { flex: 1; padding: 8px 11px; font-size: 13px; }
+.tag-add .btn { flex: none; }
+.topic-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ---------- 모아보기 ---------- */
+.mv-tabs { display: flex; gap: 6px; margin: 12px 0 4px; }
+.mv-tabs button { flex: 1; border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 900; background: var(--surface); border: 1px solid var(--line); color: var(--ink-2); }
+.mv-tabs button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.topic-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; margin-top: 12px; }
+.topic-card {
+  text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 13px 12px; box-shadow: var(--shadow);
+}
+.topic-card .tname { font-size: 14px; font-weight: 900; letter-spacing: -.01em; }
+.topic-card .tcount { font-size: 11px; color: var(--ink-3); font-weight: 700; margin-top: 3px; }
+.topic-card .tlast { font-size: 10.5px; color: var(--ink-3); margin-top: 6px; }
+.topic-card .temojis { font-size: 12px; letter-spacing: 1px; margin-top: 4px; }
+.period-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.period-block {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px;
+}
+.period-block .pl { font-size: 14px; font-weight: 900; }
+.period-block .pc { font-size: 11px; color: var(--ink-3); font-weight: 700; margin-top: 2px; }
+.period-thumbs { display: flex; gap: 4px; margin-left: auto; }
+.period-thumbs img, .period-thumbs .ph { width: 34px; height: 34px; border-radius: 8px; object-fit: cover; background: var(--bg-2); display: grid; place-items: center; font-size: 12px; }
+
+/* ---------- 서류함 ---------- */
+.lock-wrap { text-align: center; padding: 34px 18px; }
+.lock-wrap .lock-ic { font-size: 34px; }
+.lock-wrap h2 { font-size: 16px; margin: 10px 0 4px; }
+.pin-input {
+  width: 150px; text-align: center; letter-spacing: 12px; font-size: 20px; font-weight: 900;
+  padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2);
+}
+.doc-card {
+  display: flex; gap: 11px; align-items: flex-start; width: 100%; text-align: left;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px;
+  box-shadow: 0 1px 2px rgba(43, 42, 38, .03);
+}
+.doc-ic { width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--blue-soft); display: grid; place-items: center; font-size: 18px; }
+.doc-card h3 { font-size: 13.8px; line-height: 1.35; }
+.doc-card .dmeta { font-size: 11px; color: var(--ink-3); font-weight: 700; margin-top: 3px; }
+.doc-card .dnote { font-size: 11.5px; color: var(--ink-2); margin-top: 4px; }
+.doc-card .dright { margin-left: auto; flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+.status { font-size: 10px; font-weight: 900; border-radius: 6px; padding: 2px 6px; white-space: nowrap; }
+.status.s0 { background: var(--accent-soft); color: var(--accent); }
+.status.s1 { background: var(--rose-soft); color: var(--rose); }
+.status.s2 { background: var(--blue-soft); color: var(--blue); }
+.doc-file { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 800; color: var(--blue); margin-top: 5px; margin-right: 8px; }
+
+/* ---------- 설정 ---------- */
+.set-group { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; margin-top: 12px; }
+.set-group > h2 { font-size: 13.5px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.set-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line-2); }
+.set-row:last-child { border-bottom: 0; }
+.set-row .sl { flex: 1; min-width: 0; }
+.set-row .sl b { display: block; font-size: 13px; }
+.set-row .sl span { font-size: 11px; color: var(--ink-3); }
+.set-row .btn { flex: none; }
+.sync-line { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; font-weight: 800; margin-top: 6px; line-height: 1.55; }
+.sync-line > span:first-child { flex: none; font-size: 12px; line-height: 1.5; }
+.meter { height: 6px; border-radius: 99px; background: var(--line-2); overflow: hidden; margin-top: 8px; }
+.meter > i { display: block; height: 100%; background: var(--accent-2); border-radius: 99px; }
+.meter.warn > i { background: var(--sun); }
+.meter.over > i { background: var(--rose); }
+.code-box {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px;
+  background: var(--bg-2); border: 1px dashed #D8CBB6; border-radius: 10px; padding: 9px 10px;
+  word-break: break-all; color: var(--ink-2);
+}
+.restore-item { display: flex; gap: 8px; align-items: center; font-size: 12px; padding: 5px 0; }
+.restore-item .cnt { margin-left: auto; font-weight: 900; }
+
+/* ---------- 하단 탭 ---------- */
+.tabbar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+  display: flex; justify-content: center; gap: 2px;
+  background: rgba(255, 253, 249, .94); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+  padding: 6px 6px calc(6px + var(--safe-b));
+}
+.tabbar .tab {
+  flex: 1; max-width: 150px; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 5px 2px; border-radius: 12px; font-size: 10.5px; font-weight: 800; color: var(--ink-3);
+}
+.tabbar .tab .ti { font-size: 18px; line-height: 1.15; filter: grayscale(.55); }
+.tabbar .tab.on { color: var(--accent); background: var(--accent-soft); }
+.tabbar .tab.on .ti { filter: none; }
+
+/* ---------- 토스트 ---------- */
+.toast-root { position: fixed; left: 0; right: 0; bottom: calc(76px + var(--safe-b)); z-index: 90; display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none; }
+.toast {
+  background: rgba(36, 33, 28, .94); color: #fff; font-size: 12.5px; font-weight: 700;
+  border-radius: 11px; padding: 9px 14px; max-width: 88vw; text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- 인쇄/PDF ---------- */
+.print-root { display: none; }
+.print-root.show {
+  display: block; position: fixed; inset: 0; z-index: 200; background: #fff; overflow: auto;
+  padding: 0 0 70px;
+}
+.print-bar {
+  position: sticky; top: 0; display: flex; gap: 8px; align-items: center;
+  background: #F7F4EE; border-bottom: 1px solid var(--line); padding: 10px 14px;
+}
+.print-bar b { font-size: 13px; flex: 1; }
+.print-doc { max-width: 780px; margin: 0 auto; padding: 22px 18px 40px; color: #222; font-size: 13px; }
+.print-doc h1 { font-size: 22px; margin-bottom: 4px; }
+.print-doc .pd-sub { font-size: 11.5px; color: #777; margin-bottom: 4px; }
+.print-doc .pd-note { font-size: 10.5px; color: #8A601C; background: #FBF3E4; border-radius: 7px; padding: 6px 9px; margin: 10px 0 18px; display: inline-block; }
+.print-doc .pd-sec { border-top: 1px solid #E4DED4; padding: 14px 0; page-break-inside: avoid; }
+.print-doc .pd-sec h3 { font-size: 15px; margin-bottom: 3px; }
+.print-doc .pd-meta { font-size: 11px; color: #777; margin-bottom: 6px; }
+.print-doc .pd-say { font-size: 13px; background: #F5F8F6; border-left: 3px solid #7FA99E; padding: 8px 10px; margin: 6px 0; white-space: pre-wrap; }
+.print-doc .pd-memo { font-size: 12px; color: #555; border-left: 3px solid #D9C9A8; padding: 4px 10px; margin: 6px 0; white-space: pre-wrap; }
+.print-doc .pd-imgs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+.print-doc .pd-imgs img { width: 148px; height: 148px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd; }
+.print-doc .pd-file { font-size: 11px; color: #555; }
+.print-doc .pd-toc { font-size: 12px; color: #444; margin-top: 8px; }
+.print-doc .pd-toc td { padding: 3px 8px 3px 0; }
+.print-empty { color: #888; font-size: 12px; }
+
+/* ---------- PC ---------- */
+@media (min-width: 900px) {
+  body { font-size: 15.5px; }
+  #app { max-width: 1080px; padding: 0 26px 120px; }
+  .topbar { padding: 16px 2px 12px; }
+  .brand-text strong { font-size: 16.5px; }
+  .main { display: block; }
+  [data-page="home"] .timeline { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+  [data-page="home"] .month-head { grid-column: 1 / -1; }
+  .hero { padding: 26px 26px 22px; }
+  .hero h1 { font-size: 25px; }
+  .cta { max-width: 380px; }
+  .hero-under { max-width: 520px; }
+  .topic-grid { grid-template-columns: repeat(4, 1fr); }
+  .tabbar { position: sticky; bottom: 18px; margin: 26px auto 0; max-width: 520px; border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 6px; background: rgba(255, 253, 249, .96); }
+  .toast-root { bottom: 110px; }
+  .sheet-body { padding: 16px 18px; }
+  .stats { grid-template-columns: repeat(3, 1fr); max-width: 520px; }
+}
+@media (max-width: 380px) {
+  .media-btns { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .media-btn { font-size: 10.5px; }
+}
+
+/* ---------- 인쇄 ---------- */
+@media print {
+  html, body { background: #fff !important; }
+  body > #app, body > #modalRoot, body > #toastRoot, .print-bar { display: none !important; }
+  .print-root, .print-root.show { display: block !important; position: static !important; inset: auto !important; overflow: visible !important; padding: 0 !important; }
+  .print-doc { max-width: none; padding: 0; font-size: 11pt; }
+  .print-doc .pd-sec { page-break-inside: avoid; }
+  .print-doc .pd-imgs img { width: 118px; height: 118px; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-logo" aria-hidden="true">🌱</span>
+      <div class="brand-text">
+        <strong id="brandTitle">우리집 성장 기록</strong>
+        <span id="brandSub">사진 한 장, 말 한 줄이면 충분해요</span>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="sync-pill" id="syncPill" data-act="goSettings" title="가족 동기화 상태">⚪ 로컬만</button>
+    </div>
+  </header>
+
+  <main id="main" class="main" aria-live="polite"></main>
+
+  <nav id="tabbar" class="tabbar" aria-label="주요 메뉴"></nav>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toastRoot" class="toast-root" aria-live="assertive"></div>
+<div id="printRoot" class="print-root" aria-hidden="true"></div>
+<input type="file" id="hiddenFile" hidden>
+<script>/* ===== app1_core.js ===== */
+/* =====================================================================
+   1. 코어 — 상태·저장·화면 전환·공통 UI
+   · 한 아이의 성장 기록을 사진 한 장, 말 한 줄로 남기는 가족용 앱
+   · 실제 가족 정보는 코드에 넣지 않는다(기기/가족 방 안에서만)
+   ===================================================================== */
+const KEY = 'growth-archive-v1';
+const APP_VERSION = '1.0.0';
+const TYPES = [
+  {id: '생각', emoji: '💬'},
+  {id: '질문·탐구', emoji: '🔍'},
+  {id: '작품', emoji: '🎨'},
+  {id: '협업', emoji: '🤝'},
+];
+const PRESET_TOPICS = ['로봇', '수학', '자연', '만들기', '그림', '음악', '몸놀이', '이야기'];
+const DOC_STATUS = ['보유중', '재발급필요', '완료'];
+const HELPED = [
+  {id: 'alone', label: '혼자 함', emoji: '🙌'},
+  {id: 'helped', label: '도움받음', emoji: '🤲'},
+  {id: 'unknown', label: '모름·미기록', emoji: '·'},
+];
+const MEDIA_LIMIT = {image: 900 * 1024, file: 2.5 * 1024 * 1024, audio: 2.2 * 1024 * 1024, count: 8};
+
+/* ---------- 작은 도구 ---------- */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const arr = v => (Array.isArray(v) ? v : []);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+const uid = p => (p || 'x') + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const num = (v, d = 0) => { const n = Number(v); return Number.isFinite(n) ? n : d; };
+const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+const pad2 = n => String(n).padStart(2, '0');
+function dayKey(d) {
+  const x = d ? new Date(d) : new Date();
+  if (isNaN(x)) return '';
+  return x.getFullYear() + '-' + pad2(x.getMonth() + 1) + '-' + pad2(x.getDate());
+}
+function parseDay(s) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ''));
+  if (!m) return null;
+  const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  return isNaN(d) ? null : d;
+}
+function fmtDate(s) {
+  const d = parseDay(s);
+  return d ? d.getFullYear() + '.' + pad2(d.getMonth() + 1) + '.' + pad2(d.getDate()) : '';
+}
+function fmtDateKo(s) {
+  const d = parseDay(s);
+  return d ? (d.getMonth() + 1) + '월 ' + d.getDate() + '일' : '';
+}
+function fmtStamp(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  return isNaN(d) ? '' : d.getFullYear() + '.' + pad2(d.getMonth() + 1) + '.' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+}
+function mmss(sec) { sec = Math.max(0, Math.round(sec)); return pad2(Math.floor(sec / 60)) + ':' + pad2(sec % 60); }
+function typeMeta(id) { return TYPES.find(t => t.id === id) || TYPES[0]; }
+function typeIndex(id) { const i = TYPES.findIndex(t => t.id === id); return i < 0 ? 0 : i; }
+function helpedMeta(id) { return HELPED.find(h => h.id === id) || HELPED[2]; }
+function statusIndex(s) { const i = DOC_STATUS.indexOf(s); return i < 0 ? 0 : i; }
+function cleanTopic(s) { return String(s == null ? '' : s).replace(/^#+/, '').replace(/[,\n\r\t]/g, ' ').trim().slice(0, 24); }
+function topicsOf(r) { return arr(r && r.topics).map(cleanTopic).filter(Boolean); }
+function bytesText(n) {
+  n = num(n, 0);
+  return n >= 1024 * 1024 ? (n / 1024 / 1024).toFixed(1) + 'MB' : n >= 1024 ? Math.round(n / 1024) + 'KB' : n + 'B';
+}
+function mediaImages(r) {
+  const out = [];
+  arr(r && r.media).forEach(m => { if (m && m.kind === 'image' && m.data) out.push(m); });
+  arr(r && r.versions).forEach(v => arr(v && v.media).forEach(m => { if (m && m.kind === 'image' && m.data) out.push(m); }));
+  return out;
+}
+function thumbOf(r) {
+  const im = mediaImages(r)[0];
+  if (im) return '<img src="' + im.data + '" alt="">';
+  const t = typeMeta(r && r.type);
+  return '<span>' + t.emoji + '</span>';
+}
+function mediaCount(r) {
+  let n = arr(r && r.media).length;
+  arr(r && r.versions).forEach(v => { n += arr(v && v.media).length; });
+  return n;
+}
+function sortRecords(list) {
+  return arr(list).slice().sort((a, b) => {
+    const da = a.date || '', db = b.date || '';
+    if (da !== db) return da < db ? 1 : -1;
+    return num(b.createdAt) - num(a.createdAt);
+  });
+}
+function recTitle(r) {
+  const t = String((r && r.title) || '').trim();
+  return t || autoTitle(r);
+}
+function autoTitle(r) {
+  const day = fmtDateKo(r && r.date) || fmtDateKo(dayKey());
+  const t = typeMeta(r && r.type);
+  return day + ' · ' + t.id;
+}
+function ageText(dateStr) {
+  const b = parseDay(state.profile.birthDate);
+  const d = parseDay(dateStr) || new Date();
+  if (!b || isNaN(d)) return '';
+  let months = (d.getFullYear() - b.getFullYear()) * 12 + (d.getMonth() - b.getMonth());
+  if (d.getDate() < b.getDate()) months -= 1;
+  if (months < 0) return '';
+  const y = Math.floor(months / 12), m = months % 12;
+  return '만 ' + y + '세' + (m ? ' ' + m + '개월' : '');
+}
+function ageMonths(dateStr) {
+  const b = parseDay(state.profile.birthDate);
+  const d = parseDay(dateStr);
+  if (!b || !d) return null;
+  let months = (d.getFullYear() - b.getFullYear()) * 12 + (d.getMonth() - b.getMonth());
+  if (d.getDate() < b.getDate()) months -= 1;
+  return months;
+}
+
+/* ---------- 기본 상태 ---------- */
+function defaults() {
+  return {
+    v: 1,
+    profile: {childName: '', birthDate: ''},
+    settings: {docPin: '', docsLocked: false, collectionNote: ''},
+    records: [],
+    docs: [],
+    deleted: {records: {}, docs: {}},     /* 지운 항목 표식(다른 기기에서 되살아나지 않게) */
+    updatedAt: 0,
+  };
+}
+
+function sanitizeMedia(m) {
+  if (!m || typeof m !== 'object') return null;
+  const kind = ['image', 'file', 'audio'].includes(m.kind) ? m.kind : 'file';
+  const data = typeof m.data === 'string' ? m.data.slice(0, 3200000) : '';
+  const path = typeof m.path === 'string' ? m.path.slice(0, 300) : '';
+  if (!data && !path) return null;
+  return {
+    id: m.id ? String(m.id).slice(0, 40) : uid('m'),
+    kind, data, path,
+    name: String(m.name || (kind === 'image' ? '사진' : kind === 'audio' ? '녹음' : '파일')).slice(0, 120),
+    mime: String(m.mime || '').slice(0, 80),
+    size: clamp(num(m.size, 0), 0, 20000000),
+    w: clamp(num(m.w, 0), 0, 20000), h: clamp(num(m.h, 0), 0, 20000),
+    dur: clamp(num(m.dur, 0), 0, 600),
+  };
+}
+function sanitizeTopicList(list) {
+  const seen = {};
+  const out = [];
+  arr(list).forEach(x => {
+    const t = cleanTopic(x);
+    if (t && !seen[t.toLowerCase()]) { seen[t.toLowerCase()] = 1; out.push(t); }
+  });
+  return out.slice(0, 10);
+}
+function sanitizeVersion(v) {
+  if (!v || typeof v !== 'object') return null;
+  const media = arr(v.media).map(sanitizeMedia).filter(Boolean).slice(0, MEDIA_LIMIT.count);
+  const entry = {
+    id: v.id ? String(v.id).slice(0, 40) : uid('ver'),
+    date: parseDay(v.date) ? String(v.date) : dayKey(),
+    childSay: String(v.childSay || '').slice(0, 4000),
+    note: String(v.note || '').slice(0, 4000),
+    media,
+    at: num(v.at, Date.now()),
+  };
+  if (!entry.childSay && !entry.note && !media.length) return null;
+  return entry;
+}
+function sanitizeRecord(r) {
+  if (!r || typeof r !== 'object') return null;
+  const media = arr(r.media).map(sanitizeMedia).filter(Boolean).slice(0, MEDIA_LIMIT.count);
+  const versions = arr(r.versions).map(sanitizeVersion).filter(Boolean).slice(0, 60);
+  const rec = {
+    id: r.id ? String(r.id).slice(0, 40) : uid('rec'),
+    title: String(r.title || '').slice(0, 160),
+    date: parseDay(r.date) ? String(r.date) : dayKey(),
+    type: TYPES.some(t => t.id === r.type) ? r.type : TYPES[0].id,
+    topics: sanitizeTopicList(r.topics),
+    childSay: String(r.childSay || '').slice(0, 8000),
+    parentNote: String(r.parentNote || '').slice(0, 8000),
+    helped: ['alone', 'helped', 'unknown'].includes(r.helped) ? r.helped : 'unknown',
+    media, versions,
+    fav: !!r.fav,
+    later: !!r.later,
+    createdAt: num(r.createdAt, Date.now()),
+    updatedAt: num(r.updatedAt, Date.now()),
+  };
+  if (!rec.title && !rec.childSay && !rec.parentNote && !media.length && !versions.length) return null;
+  return rec;
+}
+function sanitizeDoc(d) {
+  if (!d || typeof d !== 'object') return null;
+  const name = String(d.name || '').slice(0, 160).trim();
+  if (!name && !arr(d.media).length) return null;
+  return {
+    id: d.id ? String(d.id).slice(0, 40) : uid('doc'),
+    name: name || '이름 없는 서류',
+    issuer: String(d.issuer || '').slice(0, 120),
+    period: String(d.period || '').slice(0, 80),
+    issuedAt: parseDay(d.issuedAt) ? String(d.issuedAt) : '',
+    location: String(d.location || '').slice(0, 160),
+    status: DOC_STATUS.includes(d.status) ? d.status : DOC_STATUS[0],
+    note: String(d.note || '').slice(0, 4000),
+    media: arr(d.media).map(sanitizeMedia).filter(Boolean).slice(0, 8),
+    createdAt: num(d.createdAt, Date.now()),
+    updatedAt: num(d.updatedAt, Date.now()),
+  };
+}
+function sanitize(raw) {
+  const d = defaults();
+  if (!raw || typeof raw !== 'object') return d;
+  const s = d;
+  s.v = 1;
+  s.profile = {
+    childName: String((raw.profile && raw.profile.childName) || '').slice(0, 40).trim(),
+    birthDate: parseDay(raw.profile && raw.profile.birthDate) ? raw.profile.birthDate : '',
+  };
+  const set = (raw.settings && typeof raw.settings === 'object') ? raw.settings : {};
+  s.settings = {
+    docPin: /^\d{4}$/.test(String(set.docPin || '')) ? String(set.docPin) : '',
+    docsLocked: !!set.docsLocked,
+    collectionNote: String(set.collectionNote || '').slice(0, 200),
+  };
+  s.records = arr(raw.records).map(sanitizeRecord).filter(Boolean).slice(0, 4000);
+  s.docs = arr(raw.docs).map(sanitizeDoc).filter(Boolean).slice(0, 800);
+  s.deleted = sanitizeTombstones(raw.deleted);
+  s.updatedAt = num(raw.updatedAt, 0);
+  return s;
+}
+
+function sanitizeTombstones(raw) {
+  const out = {records: {}, docs: {}};
+  const cut = Date.now() - 365 * 86400000;
+  const take = (src, dst) => {
+    if (!src || typeof src !== 'object') return;
+    Object.keys(src).slice(0, 600).forEach(k => {
+      const t = num(src[k], 0);
+      if (t > cut) dst[String(k).slice(0, 40)] = t;
+    });
+  };
+  take(raw && raw.records, out.records);
+  take(raw && raw.docs, out.docs);
+  return out;
+}
+
+let state = defaults();
+const UI = {
+  view: 'home',
+  q: '', types: [], topics: [], period: 'all', ageRange: 'all', attach: 'all', fav: false, later: false,
+  mv: 'topics', periodMode: 'month',
+  docQ: '', docStatus: 'all',
+  locked: true,
+  booted: false,
+};
+const FORM = {media: [], versionOf: '', editId: ''};
+
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return false;
+    state = sanitize(JSON.parse(raw));
+    return true;
+  } catch (e) { state = defaults(); return false; }
+}
+function persist() {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); return true; }
+  catch (e) {
+    toast('이 기기 저장 공간이 부족해요. 사진·음성 기록을 줄이거나 ZIP으로 백업해 주세요.', 4200);
+    return false;
+  }
+}
+function save(opts) {
+  opts = opts || {};
+  state.updatedAt = Date.now();
+  const ok = persist();
+  if (!opts.silent && window.GASync) window.GASync.schedulePush();
+  return ok;
+}
+
+/* ---------- 토스트 ---------- */
+function toast(msg, ms) {
+  const root = $('#toastRoot');
+  if (!root) return;
+  while (root.children.length >= 2) root.firstElementChild.remove();
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  root.appendChild(el);
+  setTimeout(() => { el.style.transition = 'opacity .3s'; el.style.opacity = '0'; setTimeout(() => el.remove(), 320); }, ms || 2400);
+}
+
+/* ---------- 시트 ---------- */
+let sheetStack = [];
+function openSheet(html, opts) {
+  opts = opts || {};
+  closeAllSheets();
+  const wrap = document.createElement('div');
+  wrap.className = 'overlay' + (opts.center ? ' center' : '');
+  wrap.innerHTML = '<div class="sheet" role="dialog" aria-modal="true" aria-label="' + esc(opts.title || '') + '">' +
+    (opts.center ? '' : '<div class="sheet-grab"></div>') +
+    '<div class="sheet-head"><h2>' + (opts.title || '') + '</h2>' +
+    '<button class="icon-btn" data-act="closeSheet" aria-label="닫기">✕</button></div>' +
+    '<div class="sheet-body">' + html + '</div></div>';
+  wrap.addEventListener('click', e => { if (e.target === wrap) closeSheet(); });
+  $('#modalRoot').appendChild(wrap);
+  sheetStack.push(wrap);
+  if (opts.onMount) setTimeout(() => { try { opts.onMount(wrap); } catch (e) {} }, 0);
+  return wrap;
+}
+function closeSheet() {
+  const w = sheetStack.pop();
+  if (w) w.remove();
+}
+function closeAllSheets() { sheetStack.forEach(w => w.remove()); sheetStack = []; }
+function sheetShell(title, bodyHtml, footHtml, opts) {
+  return openSheet(bodyHtml + (footHtml ? '<div class="sheet-foot">' + footHtml + '</div>' : ''), Object.assign({title}, opts || {}));
+}
+function askConfirm(title, text, okLabel, danger) {
+  return new Promise(resolve => {
+    const w = openSheet(
+      '<p style="font-size:13.5px;line-height:1.62;color:var(--ink-2)">' + text + '</p>' +
+      '<div class="sheet-foot"><button class="btn ghost" data-x="0" style="flex:1">취소</button>' +
+      '<button class="btn ' + (danger ? 'danger' : '') + '" data-x="1" style="flex:1.35">' + esc(okLabel || '확인') + '</button></div>',
+      {title: title, center: true}
+    );
+    const finish = v => { const i = sheetStack.indexOf(w); if (i >= 0) sheetStack.splice(i, 1); w.remove(); resolve(v); };
+    w.addEventListener('click', e => {
+      const b = e.target.closest('[data-x]');
+      if (b) finish(b.dataset.x === '1');
+      else if (e.target === w) finish(false);
+    });
+  });
+}
+function askText(title, label, value, placeholder) {
+  return new Promise(resolve => {
+    const w = openSheet(
+      '<div class="field"><label>' + esc(label) + '</label>' +
+      '<input class="input" id="askTextInput" value="' + esc(value || '') + '" placeholder="' + esc(placeholder || '') + '"></div>' +
+      '<div class="sheet-foot"><button class="btn ghost" data-x="0" style="flex:1">취소</button>' +
+      '<button class="btn" data-x="1" style="flex:1.3">확인</button></div>',
+      {title: title, center: true, onMount: root => { const i = $('#askTextInput', root); if (i) { i.focus(); i.select(); } }}
+    );
+    const finish = v => { const i = sheetStack.indexOf(w); if (i >= 0) sheetStack.splice(i, 1); w.remove(); resolve(v); };
+    w.addEventListener('click', e => {
+      const b = e.target.closest('[data-x]');
+      if (b) finish(b.dataset.x === '1' ? String(($('#askTextInput', w) || {}).value || '').trim() : null);
+      else if (e.target === w) finish(null);
+    });
+    w.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); finish(String(($('#askTextInput', w) || {}).value || '').trim()); }
+    });
+  });
+}
+
+/* ---------- 화면 ---------- */
+const VIEWS = {
+  home: () => ViewHome(),
+  map: () => ViewMap(),
+  docs: () => ViewDocs(),
+  settings: () => ViewSettings(),
+};
+function go(view) {
+  if (!VIEWS[view]) view = 'home';
+  UI.view = view;
+  render();
+  try { window.scrollTo({top: 0, behavior: 'smooth'}); } catch (e) { window.scrollTo(0, 0); }
+}
+function render() {
+  const main = $('#main');
+  if (!main) return;
+  const scroll = window.scrollY;
+  main.innerHTML = (VIEWS[UI.view] || VIEWS.home)();
+  main.setAttribute('data-page', UI.view);
+  renderTabbar();
+  applyBrand();
+  if (UI.keepScroll) window.scrollTo(0, scroll);
+  UI.keepScroll = false;
+}
+function rerender() { UI.keepScroll = true; render(); }
+function renderTabbar() {
+  const el = $('#tabbar');
+  if (!el) return;
+  const items = [
+    {id: 'home', icon: '🏠', label: '홈'},
+    {id: 'map', icon: '🗺️', label: '모아보기'},
+    {id: 'docs', icon: '📁', label: '서류함'},
+    {id: 'settings', icon: '⚙️', label: '설정'},
+  ];
+  el.innerHTML = items.map(it =>
+    '<button class="tab ' + (UI.view === it.id ? 'on' : '') + '" data-act="go" data-view="' + it.id + '"' +
+    (UI.view === it.id ? ' aria-current="page"' : '') + '><span class="ti" aria-hidden="true">' + it.icon + '</span><span>' + it.label + '</span></button>'
+  ).join('');
+}
+function applyBrand() {
+  const name = state.profile.childName;
+  const t = $('#brandTitle'); if (t) t.textContent = name ? name + '의 성장 기록' : '우리집 성장 기록';
+  const s = $('#brandSub');
+  if (s) s.textContent = name ? (ageText(dayKey()) || '오늘도 한 줄 남겨 볼까요') : '사진 한 장, 말 한 줄이면 충분해요';
+}
+
+/* ---------- 필터 ---------- */
+function activeFilterCount() {
+  let n = 0;
+  if (UI.types.length) n += UI.types.length;
+  if (UI.topics.length) n += UI.topics.length;
+  if (UI.period !== 'all') n++;
+  if (UI.ageRange !== 'all') n++;
+  if (UI.attach !== 'all') n++;
+  if (UI.fav) n++;
+  if (UI.later) n++;
+  return n;
+}
+function periodStart() {
+  const now = new Date();
+  if (UI.period === '3m') return dayKey(new Date(now.getFullYear(), now.getMonth() - 3, now.getDate()));
+  if (UI.period === '1y') return dayKey(new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()));
+  if (UI.period === 'thisYear') return now.getFullYear() + '-01-01';
+  if (UI.period === 'lastYear') return (now.getFullYear() - 1) + '-01-01';
+  return '';
+}
+function periodEnd() {
+  const now = new Date();
+  if (UI.period === 'lastYear') return (now.getFullYear() - 1) + '-12-31';
+  return '9999-12-31';
+}
+function matchRecord(r) {
+  const q = UI.q.trim().toLowerCase();
+  if (q) {
+    const hay = [r.title, r.childSay, r.parentNote, topicsOf(r).join(' '), arr(r.versions).map(v => v.childSay + ' ' + v.note).join(' ')].join(' ').toLowerCase();
+    if (hay.indexOf(q) < 0) return false;
+  }
+  if (UI.types.length && UI.types.indexOf(r.type) < 0) return false;
+  if (UI.topics.length) {
+    const t = topicsOf(r).map(x => x.toLowerCase());
+    if (!UI.topics.every(x => t.indexOf(x.toLowerCase()) >= 0)) return false;
+  }
+  if (UI.period !== 'all') {
+    const from = periodStart(), to = periodEnd();
+    if (!(r.date >= from && r.date <= to)) return false;
+  }
+  if (UI.ageRange !== 'all') {
+    const m = ageMonths(r.date);
+    if (m == null) return false;
+    const parts = UI.ageRange.split('-').map(Number);
+    if (!(m >= parts[0] * 12 && m < (parts[1] + 1) * 12)) return false;
+  }
+  if (UI.attach === 'yes' && mediaCount(r) === 0) return false;
+  if (UI.attach === 'no' && mediaCount(r) > 0) return false;
+  if (UI.fav && !r.fav) return false;
+  if (UI.later && !r.later) return false;
+  return true;
+}
+function filteredRecords() { return sortRecords(state.records).filter(matchRecord); }
+function resetFilters() {
+  UI.q = ''; UI.types = []; UI.topics = []; UI.period = 'all'; UI.ageRange = 'all'; UI.attach = 'all'; UI.fav = false; UI.later = false;
+}
+function allTopics() {
+  const map = {};
+  state.records.forEach(r => topicsOf(r).forEach(t => {
+    const k = t.toLowerCase();
+    if (!map[k]) map[k] = {name: t, count: 0, last: '', kinds: {}};
+    map[k].count++;
+    if ((r.date || '') > map[k].last) map[k].last = r.date || '';
+    map[k].kinds[r.type] = (map[k].kinds[r.type] || 0) + 1;
+    if (map[k].name !== t && t.length < map[k].name.length) map[k].name = t;
+  }));
+  return Object.keys(map).map(k => map[k]).sort((a, b) => b.count - a.count || (a.name < b.name ? -1 : 1));
+}
+function typeCounts(list) {
+  const c = {};
+  TYPES.forEach(t => { c[t.id] = 0; });
+  arr(list).forEach(r => { if (c[r.type] != null) c[r.type]++; });
+  return c;
+}
+
+/* ---------- 카드 조각 ---------- */
+function typeChip(type) {
+  const t = typeMeta(type);
+  return '<span class="type-chip t' + typeIndex(type) + '">' + t.emoji + ' ' + esc(t.id) + '</span>';
+}
+function statusChip(s) {
+  return '<span class="status s' + statusIndex(s) + '">' + esc(s) + '</span>';
+}
+function helpedChip(id) {
+  const h = helpedMeta(id);
+  if (id === 'unknown') return '';
+  return '<span class="meta badge-soft ' + (id === 'alone' ? 'badge-alone' : '') + '">' + h.emoji + ' ' + h.label + '</span>';
+}
+function emptyBox(emoji, html, actionHtml) {
+  return '<div class="empty"><span class="e">' + emoji + '</span>' + html + (actionHtml ? '<div style="margin-top:14px">' + actionHtml + '</div>' : '') + '</div>';
+}
+
+
+/* ===== app2_sync.js ===== */
+/* =====================================================================
+   2. 가족 실시간 동기화 — Firebase Realtime Database
+   · 방 코드를 정하면 rooms/<방 코드> 로 가족 기기끼리 실시간 공유
+   · 방 코드를 정하지 않으면 이 기기에만 저장(로컬)
+   · 덮어쓰기 방지 3중 안전장치
+     ① 기록 없는 새 기기는 빈 상태를 절대 올리지 않는다
+     ② 원격이 비었거나 초기값뿐이면 이 기기 기록을 지우지 않는다
+     ③ updatedAt 이 더 새로운 쪽이 이긴다 · 방 삭제는 하지 않는다
+   ===================================================================== */
+const SYNC_ROOM_KEY = 'growth-archive-room';
+const SYNC_DEV_KEY = 'growth-archive-device';
+const SYNC_SDK_BASE = 'https://www.gstatic.com/firebasejs/10.12.2/';
+const SYNC_FB = {
+  apiKey: 'AIzaSyD5kFkKzuifItRsbsBYigSiI1cDMJmMsF8',
+  authDomain: 'carbot-morning.firebaseapp.com',
+  databaseURL: 'https://carbot-morning-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'carbot-morning',
+  storageBucket: 'carbot-morning.firebasestorage.app',
+  messagingSenderId: '875948846755',
+  appId: '1:875948846755:web:f051b8e0442398fa601916',
+};
+const SYNC_KEYS = ['profile', 'settings', 'records', 'docs', 'deleted'];
+/* 절대 건드리면 안 되는 실사용 방 */
+const PROTECTED_ROOMS = ['connor-family-main', 'reading-garden-main', 'connor-family'];
+const SYNC_WARN_BYTES = 4.2 * 1024 * 1024;
+
+const Sync = {room: '', device: '', mode: 'none', status: 'local', primed: false, applying: false, ref: null, db: null, pushT: null, pollT: null, lastAt: 0, lastError: ''};
+
+function roomSafe(v) {
+  const s = String(v == null ? '' : v).trim().replace(/[^A-Za-z0-9_-]/g, '-').slice(0, 48);
+  return /^[A-Za-z0-9_-]{3,48}$/.test(s) ? s : '';
+}
+function roomBlocked(r) { return PROTECTED_ROOMS.indexOf(String(r || '').toLowerCase()) >= 0; }
+function loadRoom() {
+  let r = '';
+  try {
+    const u = new URLSearchParams(location.search).get('room');
+    const safe = roomSafe(u);
+    if (safe && !roomBlocked(safe)) { r = safe; try { localStorage.setItem(SYNC_ROOM_KEY, safe); } catch (e) {} }
+  } catch (e) {}
+  if (!r) {
+    try {
+      const stored = roomSafe(localStorage.getItem(SYNC_ROOM_KEY));
+      if (stored && !roomBlocked(stored)) r = stored;
+      else if (stored) localStorage.removeItem(SYNC_ROOM_KEY);
+    } catch (e) {}
+  }
+  return r || '';
+}
+function saveRoom(r) {
+  const s = roomSafe(r);
+  if (!s) return false;
+  if (roomBlocked(s)) return false;
+  Sync.room = s;
+  try { localStorage.setItem(SYNC_ROOM_KEY, s); } catch (e) {}
+  return true;
+}
+function clearRoom() {
+  Sync.room = '';
+  try { localStorage.removeItem(SYNC_ROOM_KEY); } catch (e) {}
+}
+function deviceId() {
+  try {
+    let d = localStorage.getItem(SYNC_DEV_KEY);
+    if (!d || !/^dev-[A-Za-z0-9]{4,20}$/.test(d)) {
+      d = 'dev-' + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem(SYNC_DEV_KEY, d);
+    }
+    return d;
+  } catch (e) { return 'dev-temp'; }
+}
+function syncPayload() {
+  const data = {};
+  SYNC_KEYS.forEach(k => { if (state[k] !== undefined) data[k] = state[k]; });
+  return {v: 1, updatedAt: num(state.updatedAt, 0), by: Sync.device, at: Date.now(), data};
+}
+/* 실제 기록이 있는지 — 빈 초기 상태를 올려 다른 기기 기록을 지우지 않기 위한 판별 */
+function hasMeaningfulData(o) {
+  const s = (o && typeof o === 'object') ? o : state;
+  if (arr(s.records).length || arr(s.docs).length) return true;
+  if (s.profile && String(s.profile.childName || '').trim()) return true;
+  if (s.profile && s.profile.birthDate) return true;
+  return false;
+}
+function payloadBytes(p) {
+  try { return new Blob([JSON.stringify(p || syncPayload())]).size; }
+  catch (e) { try { return JSON.stringify(p || syncPayload()).length; } catch (e2) { return 0; } }
+}
+function syncLabel(s) {
+  return s === 'online' ? '실시간 연동'
+    : s === 'connecting' ? '연결 중'
+    : s === 'offline' ? '오프라인'
+    : s === 'error' ? '연결 오류'
+    : '로컬만';
+}
+function syncStatusText(s) {
+  return s === 'online' ? '🟢 가족 방과 실시간으로 함께 쓰고 있어요. 다른 기기에서 남긴 기록도 새로고침 없이 보여요.'
+    : s === 'connecting' ? '🟡 가족 방에 연결하는 중이에요. 잠시만 기다려 주세요.'
+    : s === 'offline' ? '🟠 오프라인 — 이 기기 기록은 그대로 남아 있고, 인터넷이 되면 자동으로 다시 맞춰요.'
+    : s === 'error' ? '🔴 가족 방에 연결하지 못했어요. 방 코드와 인터넷을 확인해 주세요. 이 기기 기록은 그대로 남아 있어요.'
+    : '⚪ 로컬만 — 이 기기에만 저장돼요. 설정에서 가족 방 코드를 정하면 남편 폰·PC와 함께 볼 수 있어요.';
+}
+function setSyncStatus(s) {
+  Sync.status = s;
+  const pill = $('#syncPill');
+  if (pill) pill.innerHTML = (s === 'online' ? '🟢' : s === 'connecting' ? '🟡' : s === 'offline' ? '🟠' : s === 'error' ? '🔴' : '⚪') + ' ' + syncLabel(s);
+  const line = $('#syncStateText');
+  if (line) line.textContent = syncStatusText(s);
+  const dot = $('#syncDot');
+  if (dot) dot.textContent = (s === 'online' ? '🟢' : s === 'connecting' ? '🟡' : s === 'offline' ? '🟠' : s === 'error' ? '🔴' : '⚪');
+}
+/* 두 기기가 동시에 남긴 기록을 잃지 않도록 ID 기준 합집합으로 합친다.
+   · 같은 ID는 더 새로 고친(updatedAt) 쪽을 쓴다
+   · 지운 항목(deleted)은 그 뒤로 고쳐지지 않은 한 되살리지 않는다 */
+function mergeById(localList, remoteList, tomb) {
+  const map = {};
+  arr(localList).forEach(x => { if (x && x.id) map[x.id] = x; });
+  arr(remoteList).forEach(x => {
+    if (!x || !x.id) return;
+    const cur = map[x.id];
+    if (!cur || num(x.updatedAt) > num(cur.updatedAt)) map[x.id] = x;
+  });
+  return Object.keys(map).map(k => map[k]).filter(x => !(tomb[x.id] && tomb[x.id] >= num(x.updatedAt, 0)));
+}
+function mergeTomb(a, b) {
+  const out = {};
+  [a, b].forEach(src => {
+    Object.keys(src || {}).forEach(k => { out[k] = Math.max(num(out[k], 0), num(src[k], 0)); });
+  });
+  return out;
+}
+function applyRemote(remote, force) {
+  if (!remote || typeof remote !== 'object') return false;
+  const at = num(remote.updatedAt, 0);
+  if (!force && !(at > num(state.updatedAt, 0))) return false;
+  const data = (remote.data && typeof remote.data === 'object') ? remote.data : null;
+  if (!data) return false;
+  Sync.applying = true;
+  let ok = false;
+  let grew = false;
+  try {
+    const remoteClean = sanitize({profile: data.profile, settings: data.settings, records: data.records, docs: data.docs, deleted: data.deleted, updatedAt: at});
+    const tombR = mergeTomb(state.deleted.records, remoteClean.deleted.records);
+    const tombD = mergeTomb(state.deleted.docs, remoteClean.deleted.docs);
+    const localIds = state.records.map(r => r.id).sort().join(',') + '|' + state.docs.map(d => d.id).sort().join(',');
+    const records = mergeById(state.records, remoteClean.records, tombR);
+    const docs = mergeById(state.docs, remoteClean.docs, tombD);
+    const mergedIds = records.map(r => r.id).sort().join(',') + '|' + docs.map(d => d.id).sort().join(',');
+    grew = mergedIds !== localIds;
+    const profile = Object.assign({}, remoteClean.profile);
+    if (state.profile.childName) profile.childName = state.profile.childName;
+    if (state.profile.birthDate) profile.birthDate = state.profile.birthDate;
+    const settings = Object.assign({}, remoteClean.settings);
+    if (state.settings.docPin) settings.docPin = state.settings.docPin;
+    const merged = sanitize({
+      v: 1, profile, settings, records, docs,
+      deleted: {records: tombR, docs: tombD},
+      updatedAt: Math.max(num(state.updatedAt, 0), at),
+    });
+    state = merged;
+    persist();
+    if (typeof render === 'function') render();
+    ok = true;
+    Sync.lastAt = at;
+  } catch (e) { ok = false; }
+  Sync.applying = false;
+  if (ok && grew) {
+    /* 이 기기에만 있던 기록을 합쳐 넣었으면, 그 합친 상태를 가족 방에도 알린다 */
+    state.updatedAt = Date.now();
+    persist();
+    pushNow();
+  }
+  return ok;
+}
+function onRemote(val) {
+  const remote = (val && typeof val === 'object') ? val : null;
+  if (Sync.status !== 'online' && Sync.status !== 'offline') setSyncStatus('online');
+  const rat = remote ? num(remote.updatedAt, 0) : 0;
+  const rdata = (remote && remote.data && typeof remote.data === 'object') ? remote.data : null;
+  const remoteHas = !!(rdata && hasMeaningfulData(rdata));
+  const localHas = hasMeaningfulData(state);
+
+  if (!Sync.primed) {
+    Sync.primed = true;
+    if (remoteHas) {
+      if (!localHas) { applyRemote(remote, true); return; }              /* 기록 없는 새 기기 → 클라우드 기록을 먼저 받는다 */
+      if (!rat) { uploadNow(); return; }                                  /* 시각 없는 옛 업로드 → 이 기기 기록에 새 시각 */
+      if (rat > num(state.updatedAt, 0)) { applyRemote(remote); return; }
+      pushNow();                                                          /* 이 기기가 더 새로움 → 올린다 */
+      return;
+    }
+    /* 클라우드가 비었거나 초기값뿐 → 이 기기 기록이 있을 때만 올린다(빈 상태 보호) */
+    if (localHas) uploadNow();
+    return;
+  }
+  if (!rdata) return;                     /* 방이 비었다 — 이 기기 기록은 그대로 둔다 */
+  if (!remoteHas) { if (localHas) uploadNow(); return; }
+  if (rat > num(state.updatedAt, 0)) applyRemote(remote);
+}
+function schedulePush() {
+  if (!Sync.primed || Sync.applying || !Sync.room) return;
+  clearTimeout(Sync.pushT);
+  Sync.pushT = setTimeout(pushNow, 450);
+}
+function uploadNow() {
+  if (!Sync.room) return false;
+  Sync.primed = true;
+  state.updatedAt = Date.now();
+  persist();
+  pushNow();
+  return true;
+}
+function pushNow() {
+  if (!Sync.room || roomBlocked(Sync.room)) return;
+  if (!hasMeaningfulData(state)) return;   /* 안전장치 ①: 빈 상태는 올리지 않는다 */
+  const payload = syncPayload();
+  const done = ok => {
+    if (ok) { setSyncStatus('online'); Sync.lastError = ''; }
+    else { Sync.lastError = 'push'; setSyncStatus('offline'); if (Sync.mode === 'sdk') startREST(); }
+    const st = $('#syncSize'); if (st) st.textContent = bytesText(payloadBytes(payload));
+  };
+  if (Sync.mode === 'sdk' && Sync.ref && window.firebase && window.firebase.database) {
+    try { Sync.ref.set(payload).then(() => done(true)).catch(() => done(false)); } catch (e) { done(false); }
+    return;
+  }
+  if (Sync.mode === 'rest') restPut(payload).then(() => done(true)).catch(() => done(false));
+}
+function restURL() { return SYNC_FB.databaseURL + '/rooms/' + encodeURIComponent(Sync.room) + '.json'; }
+async function restGet() {
+  const r = await fetch(restURL(), {cache: 'no-store'});
+  if (!r.ok) throw new Error('http ' + r.status);
+  const t = await r.text();
+  return t && t.trim() ? JSON.parse(t) : null;
+}
+async function restPut(payload) {
+  const r = await fetch(restURL(), {method: 'PUT', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)});
+  if (!r.ok) throw new Error('http ' + r.status);
+  return true;
+}
+async function restDelete() {
+  const r = await fetch(restURL(), {method: 'DELETE'});
+  if (!r.ok) throw new Error('http ' + r.status);
+  return true;
+}
+async function pollOnce() {
+  if (!Sync.room) return;
+  try { const v = await restGet(); onRemote(v); }
+  catch (e) { if (Sync.status !== 'offline') setSyncStatus('offline'); }
+}
+function startREST() {
+  if (!Sync.room) return;
+  Sync.mode = 'rest';
+  if (Sync.status !== 'online') setSyncStatus('connecting');
+  clearInterval(Sync.pollT);
+  pollOnce();
+  Sync.pollT = setInterval(pollOnce, 7000);
+}
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const el = document.createElement('script');
+    el.src = src; el.async = true;
+    const t = setTimeout(() => reject(new Error('timeout')), 9000);
+    el.onload = () => { clearTimeout(t); resolve(true); };
+    el.onerror = () => { clearTimeout(t); reject(new Error('load')); };
+    document.head.appendChild(el);
+  });
+}
+async function startSDK() {
+  if (!window.firebase) await loadScript(SYNC_SDK_BASE + 'firebase-app-compat.js');
+  if (!(window.firebase && window.firebase.database)) await loadScript(SYNC_SDK_BASE + 'firebase-database-compat.js');
+  if (!(window.firebase && window.firebase.initializeApp && window.firebase.database)) throw new Error('no sdk');
+  let app;
+  try { app = window.firebase.app('growth-archive'); }
+  catch (e) { app = window.firebase.initializeApp(SYNC_FB, 'growth-archive'); }
+  Sync.db = window.firebase.database(app);
+  Sync.mode = 'sdk';
+  Sync.ref = Sync.db.ref('rooms/' + Sync.room);
+  try {
+    Sync.db.ref('.info/connected').on('value', ss => {
+      if (ss && ss.val() === false && Sync.primed) setSyncStatus('offline');
+    });
+  } catch (e) {}
+  Sync.ref.on('value', snap => onRemote(snap.val()), () => { setSyncStatus('offline'); startREST(); });
+}
+function stopSync() {
+  clearTimeout(Sync.pushT); clearInterval(Sync.pollT);
+  try { if (Sync.ref) Sync.ref.off(); } catch (e) {}
+  Sync.ref = null; Sync.mode = 'none'; Sync.primed = false;
+}
+function connect() {
+  stopSync();
+  if (Sync.room && roomBlocked(Sync.room)) Sync.room = '';
+  if (!Sync.room) { setSyncStatus('local'); return; }
+  setSyncStatus('connecting');
+  startSDK().catch(() => startREST());
+}
+async function manualDownload() {
+  if (!Sync.room) return;
+  try {
+    const v = await restGet();
+    if (!v) { toast('이 방에는 아직 올라온 기록이 없어요.'); return; }
+    const ok = await askConfirm('가족 방 기록으로 맞출까요?',
+      '이 기기의 기록을 가족 방 기록으로 바꿉니다. 지금 기록은 [전체 내보내기(ZIP)]으로 먼저 백업해 두면 안전해요.',
+      '가족 방 기록 받기');
+    if (!ok) return;
+    const done = applyRemote(v, true);
+    toast(done ? '가족 방 기록을 받았어요.' : '받지 못했어요. 잠시 후 다시 시도해 주세요.');
+  } catch (e) { toast('연결이 안 돼요. 인터넷을 확인해 주세요.'); }
+}
+
+window.GASync = {
+  get status() { return Sync.status; },
+  get primed() { return Sync.primed; },
+  get room() { return Sync.room; },
+  get url() { return Sync.room ? restURL() : ''; },
+  connect, stop: stopSync, schedulePush, uploadNow, pushNow, downloadNow: manualDownload,
+  applyRemote, onRemote, hasData: hasMeaningfulData, payload: syncPayload, payloadBytes,
+  setRoom(r) { if (!saveRoom(r)) return false; connect(); return true; },
+  clearRoom() { stopSync(); clearRoom(); setSyncStatus('local'); },
+  device: deviceId,
+  restGet, restPut, restDelete,
+  statusText: syncStatusText,
+  protectedRooms: PROTECTED_ROOMS,
+  warnBytes: SYNC_WARN_BYTES,
+};
+
+
+/* ===== app3_media.js ===== */
+/* =====================================================================
+   3. 미디어 — 사진 자동 압축, 브라우저 녹음, 파일, ZIP 만들기/풀기
+   ===================================================================== */
+
+/* ---------- 바이트/데이터URL ---------- */
+function b64ToBytes(b64) {
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+function bytesToB64(u8) {
+  let s = '';
+  const CH = 0x8000;
+  for (let i = 0; i < u8.length; i += CH) s += String.fromCharCode.apply(null, u8.subarray(i, i + CH));
+  return btoa(s);
+}
+function dataURLToBytes(durl) {
+  const i = String(durl || '').indexOf(',');
+  if (i < 0) return new Uint8Array(0);
+  return b64ToBytes(String(durl).slice(i + 1));
+}
+function bytesToDataURL(u8, mime) { return 'data:' + (mime || 'application/octet-stream') + ';base64,' + bytesToB64(u8); }
+function readAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(String(fr.result || ''));
+    fr.onerror = () => reject(new Error('read'));
+    fr.readAsDataURL(file);
+  });
+}
+function blobToDataURL(blob) { return readAsDataURL(blob); }
+
+/* ---------- 사진: 800px 이하로 줄이고 가볍게 ---------- */
+function webpOK() {
+  try {
+    const c = document.createElement('canvas');
+    c.width = c.height = 1;
+    return c.toDataURL('image/webp').indexOf('data:image/webp') === 0;
+  } catch (e) { return false; }
+}
+function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const max = 800;
+      let w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+      if (!w || !h) { reject(new Error('image')); return; }
+      const scale = Math.min(1, max / Math.max(w, h));
+      w = Math.max(1, Math.round(w * scale)); h = Math.max(1, Math.round(h * scale));
+      const cv = document.createElement('canvas');
+      cv.width = w; cv.height = h;
+      const ctx = cv.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, 0, 0, w, h);
+      const mime = webpOK() ? 'image/webp' : 'image/jpeg';
+      const tryQ = (q) => cv.toDataURL(mime, q);
+      let data = tryQ(0.72);
+      if (data.length > 330000) data = tryQ(0.6);
+      if (data.length > 260000) data = tryQ(0.5);
+      resolve({data, mime, w, h, size: dataURLToBytes(data).length});
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('image')); };
+    img.src = url;
+  });
+}
+
+/* ---------- 폼에 파일 붙이기 ---------- */
+function currentMediaTotal() {
+  return FORM.media.reduce((n, m) => n + num(m.size, 0), 0);
+}
+function pushMedia(m) {
+  if (FORM.media.length >= MEDIA_LIMIT.count) { toast('한 기록에는 첨부 ' + MEDIA_LIMIT.count + '개까지 넣을 수 있어요.'); return false; }
+  FORM.media.push(m);
+  renderFormMedia();
+  return true;
+}
+async function attachPhotos(files) {
+  const list = Array.from(files || []);
+  for (const f of list) {
+    if (!/^image\//.test(f.type)) { toast('사진 파일만 고를 수 있어요.'); continue; }
+    try {
+      const c = await compressImage(f);
+      pushMedia({id: uid('m'), kind: 'image', data: c.data, mime: c.mime, name: f.name || '사진', size: c.size, w: c.w, h: c.h, dur: 0});
+      toast('사진을 가볍게 줄여서 담았어요 (' + bytesText(c.size) + ')');
+    } catch (e) { toast('이 사진은 열 수 없어요. 다른 사진을 골라 주세요.'); }
+  }
+}
+async function attachFiles(files) {
+  const list = Array.from(files || []);
+  for (const f of list) {
+    if (f.size > MEDIA_LIMIT.file) {
+      toast('"' + f.name + '"은 ' + bytesText(f.size) + '이라 너무 커요. ' + bytesText(MEDIA_LIMIT.file) + ' 이하 파일만 붙일 수 있어요. 큰 자료는 서류함 ZIP 백업으로 보관해 주세요.', 5200);
+      continue;
+    }
+    try {
+      const data = await readAsDataURL(f);
+      pushMedia({id: uid('m'), kind: /^image\//.test(f.type) ? 'image' : 'file', data, mime: f.type || 'application/octet-stream', name: f.name || '파일', size: f.size, w: 0, h: 0, dur: 0});
+    } catch (e) { toast('파일을 읽지 못했어요.'); }
+  }
+}
+
+/* ---------- 녹음 (버튼을 누를 때만) ---------- */
+const REC = {mr: null, chunks: [], stream: null, t0: 0, timer: null, active: false, lastId: ''};
+
+function recSupported() {
+  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+}
+function renderRecSlot() {
+  const slot = $('#recSlot');
+  if (!slot) return;
+  if (REC.active) {
+    slot.innerHTML = '<div class="rec-bar"><span class="rec-dot"></span><span style="font-size:12px;font-weight:900;color:var(--rose)">녹음 중</span>' +
+      '<b class="rec-time" id="recTime">00:00</b><span style="flex:1"></span>' +
+      '<button class="btn mini danger" data-act="recStop">■ 멈춤</button></div>';
+    return;
+  }
+  const lastAudio = FORM.media.filter(m => m.kind === 'audio').slice(-1)[0];
+  if (lastAudio) {
+    slot.innerHTML = '<div class="rec-bar" style="background:var(--accent-soft);border-color:#CFE4DD">' +
+      '<span style="font-size:15px">🎙️</span><span style="font-size:12px;font-weight:800;color:var(--accent)">녹음 완료 ' + mmss(lastAudio.dur) + ' · ' + bytesText(lastAudio.size) + '</span>' +
+      '<span style="flex:1"></span><button class="btn mini soft" data-act="recAgain">다시 녹음</button></div>';
+    return;
+  }
+  slot.innerHTML = '<p class="hint">' + (recSupported()
+    ? '🎙️ 버튼을 누를 때만 녹음이 시작돼요. 최대 90초, 끝나면 미리 듣고 다시 녹음할 수 있어요.'
+    : '이 브라우저에서는 녹음을 쓸 수 없어요. 사진이나 파일, 글로 남겨 주세요.') + '</p>';
+}
+async function startRecording() {
+  if (!recSupported()) {
+    toast('이 브라우저는 녹음을 지원하지 않아요. 사진이나 글로 남겨 주세요.', 3800);
+    return;
+  }
+  if (REC.active) return;
+  try {
+    REC.stream = await navigator.mediaDevices.getUserMedia({audio: true});
+  } catch (e) {
+    toast('마이크를 쓸 수 없어요(권한 거부). 사진이나 글로 남겨 주세요.', 4200);
+    return;
+  }
+  try {
+    REC.chunks = [];
+    REC.mr = new MediaRecorder(REC.stream);
+  } catch (e) {
+    toast('녹음을 시작하지 못했어요. 파일이나 글로 남겨 주세요.', 3800);
+    stopMic();
+    return;
+  }
+  REC.mr.ondataavailable = ev => { if (ev.data && ev.data.size) REC.chunks.push(ev.data); };
+  REC.mr.onstop = async () => {
+    const dur = Math.round((Date.now() - REC.t0) / 1000);
+    const type = (REC.mr && REC.mr.mimeType) || 'audio/webm';
+    const blob = new Blob(REC.chunks, {type});
+    stopMic();
+    REC.active = false;
+    clearInterval(REC.timer);
+    if (!blob.size) { renderRecSlot(); return; }
+    const data = await blobToDataURL(blob);
+    const size = blob.size;
+    if (size > MEDIA_LIMIT.audio) {
+      toast('녹음이 너무 길어요(' + bytesText(size) + '). 30초 안팎으로 다시 녹음해 주세요.', 4500);
+      renderRecSlot();
+      return;
+    }
+    const m = {id: uid('m'), kind: 'audio', data, mime: type, name: '녹음 ' + mmss(dur), size, w: 0, h: 0, dur};
+    REC.lastId = m.id;
+    pushMedia(m);
+    renderRecSlot();
+  };
+  REC.active = true;
+  REC.t0 = Date.now();
+  REC.mr.start();
+  renderRecSlot();
+  clearInterval(REC.timer);
+  REC.timer = setInterval(() => {
+    const el = $('#recTime');
+    if (el) el.textContent = mmss((Date.now() - REC.t0) / 1000);
+    if (Date.now() - REC.t0 > 90000) stopRecording();
+  }, 250);
+}
+function stopMic() {
+  try { REC.stream && REC.stream.getTracks().forEach(t => t.stop()); } catch (e) {}
+  REC.stream = null;
+}
+function stopRecording() {
+  if (REC.mr && REC.active && REC.mr.state !== 'inactive') {
+    try { REC.mr.stop(); } catch (e) { REC.active = false; stopMic(); }
+  }
+  clearInterval(REC.timer);
+  if (REC.active) { REC.active = false; renderRecSlot(); }
+}
+function removeMedia(id) {
+  FORM.media = FORM.media.filter(m => m.id !== id);
+  renderFormMedia();
+  renderRecSlot();
+}
+function renderFormMedia() {
+  const box = $('#formMedia');
+  if (!box) return;
+  if (!FORM.media.length) { box.innerHTML = ''; return; }
+  box.innerHTML = FORM.media.map(m => {
+    if (m.kind === 'image') return '<div class="media-item" data-mid="' + m.id + '">' + (m.data ? '<img src="' + m.data + '" alt="' + esc(m.name) + '">' : '<span class="fi">🖼️</span>') + '<button class="x" data-act="rmMedia" data-id="' + m.id + '" aria-label="사진 빼기">✕</button></div>';
+    if (m.kind === 'audio') return '<div class="media-item audio" data-mid="' + m.id + '"><audio controls preload="metadata" src="' + m.data + '"></audio><span class="fi" style="font-size:9.5px">🎙️ ' + mmss(m.dur) + '</span><button class="x" data-act="rmMedia" data-id="' + m.id + '" aria-label="녹음 빼기">✕</button></div>';
+    return '<div class="media-item" data-mid="' + m.id + '"><span class="fi">📄<br>' + esc(m.name).slice(0, 18) + '<br>' + bytesText(m.size) + '</span><button class="x" data-act="rmMedia" data-id="' + m.id + '" aria-label="파일 빼기">✕</button></div>';
+  }).join('');
+  const sizeLine = $('#formSize');
+  if (sizeLine) sizeLine.textContent = FORM.media.length ? '첨부 ' + FORM.media.length + '개 · ' + bytesText(currentMediaTotal()) : '';
+}
+
+/* ---------- 파일 저장/내려받기 ---------- */
+function downloadBlob(blob, name) {
+  const a = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  a.href = url; a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 4000);
+}
+function fileSafe(name, fallback) {
+  return String(name || fallback || 'file')
+    .replace(/[\\/:*?"<>|\n\r\t]/g, '_')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 80) || fallback || 'file';
+}
+function extOf(m) {
+  const n = String((m && m.name) || '');
+  const mres = /\.([A-Za-z0-9]{1,6})$/.exec(n);
+  if (mres) return mres[1].toLowerCase();
+  const mt = String((m && m.mime) || '');
+  if (mt.indexOf('image/jpeg') === 0) return 'jpg';
+  if (mt.indexOf('image/png') === 0) return 'png';
+  if (mt.indexOf('image/webp') === 0) return 'webp';
+  if (mt.indexOf('audio/webm') === 0) return 'webm';
+  if (mt.indexOf('audio/mpeg') === 0) return 'mp3';
+  if (mt.indexOf('audio/mp4') === 0) return 'm4a';
+  if (mt.indexOf('pdf') >= 0) return 'pdf';
+  return 'bin';
+}
+
+/* ---------- ZIP (내장 순수 JS, 외부 라이브러리 없음) ---------- */
+const CRC_TABLE = (() => {
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    t[n] = c >>> 0;
+  }
+  return t;
+})();
+function crc32(u8) {
+  let c = 0xFFFFFFFF;
+  for (let i = 0; i < u8.length; i++) c = CRC_TABLE[(c ^ u8[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+function dosParts(d) {
+  d = d || new Date();
+  return {
+    t: (d.getHours() << 11) | (d.getMinutes() << 5) | Math.floor(d.getSeconds() / 2),
+    d: ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate(),
+  };
+}
+function zipBuild(files) {
+  const enc = new TextEncoder();
+  const local = [];
+  const central = [];
+  let offset = 0;
+  const dp = dosParts(new Date());
+  files.forEach(f => {
+    const name = enc.encode(f.name);
+    const data = f.data instanceof Uint8Array ? f.data : new Uint8Array(f.data || 0);
+    const crc = crc32(data);
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true);
+    lh.setUint16(4, 20, true);
+    lh.setUint16(6, 0x0800, true);     /* UTF-8 파일명 */
+    lh.setUint16(8, 0, true);          /* stored */
+    lh.setUint16(10, dp.t, true);
+    lh.setUint16(12, dp.d, true);
+    lh.setUint32(14, crc, true);
+    lh.setUint32(18, data.length, true);
+    lh.setUint32(22, data.length, true);
+    lh.setUint16(26, name.length, true);
+    lh.setUint16(28, 0, true);
+    local.push(new Uint8Array(lh.buffer), name, data);
+
+    const cd = new DataView(new ArrayBuffer(46));
+    cd.setUint32(0, 0x02014b50, true);
+    cd.setUint16(4, 20, true);
+    cd.setUint16(6, 20, true);
+    cd.setUint16(8, 0x0800, true);
+    cd.setUint16(10, 0, true);
+    cd.setUint16(12, dp.t, true);
+    cd.setUint16(14, dp.d, true);
+    cd.setUint32(16, crc, true);
+    cd.setUint32(20, data.length, true);
+    cd.setUint32(24, data.length, true);
+    cd.setUint16(28, name.length, true);
+    cd.setUint16(30, 0, true);
+    cd.setUint16(32, 0, true);
+    cd.setUint16(34, 0, true);
+    cd.setUint16(36, 0, true);
+    cd.setUint32(38, 0, true);
+    cd.setUint32(42, offset, true);
+    central.push(new Uint8Array(cd.buffer), name);
+
+    offset += 30 + name.length + data.length;
+  });
+  const cdSize = central.reduce((n, p) => n + p.length, 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true);
+  end.setUint16(8, files.length, true);
+  end.setUint16(10, files.length, true);
+  end.setUint32(12, cdSize, true);
+  end.setUint32(16, offset, true);
+  return new Blob(local.concat(central, [new Uint8Array(end.buffer)]), {type: 'application/zip'});
+}
+async function zipParse(input) {
+  const buf = input instanceof ArrayBuffer ? input : await input.arrayBuffer();
+  const u8 = new Uint8Array(buf);
+  const dv = new DataView(buf);
+  let eocd = -1;
+  for (let i = u8.length - 22; i >= Math.max(0, u8.length - 66000); i--) {
+    if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error('zip 아님');
+  const count = dv.getUint16(eocd + 10, true);
+  let p = dv.getUint32(eocd + 16, true);
+  const out = {};
+  for (let i = 0; i < count; i++) {
+    if (p + 46 > u8.length || dv.getUint32(p, true) !== 0x02014b50) break;
+    const method = dv.getUint16(p + 10, true);
+    const csize = dv.getUint32(p + 20, true);
+    const nlen = dv.getUint16(p + 28, true);
+    const elen = dv.getUint16(p + 30, true);
+    const clen = dv.getUint16(p + 32, true);
+    const lho = dv.getUint32(p + 42, true);
+    const name = new TextDecoder().decode(u8.subarray(p + 46, p + 46 + nlen));
+    const lnlen = dv.getUint16(lho + 26, true);
+    const lelen = dv.getUint16(lho + 28, true);
+    const start = lho + 30 + lnlen + lelen;
+    const raw = u8.subarray(start, start + csize);
+    let data;
+    if (method === 0) data = raw;
+    else if (method === 8 && typeof DecompressionStream !== 'undefined') {
+      const ab = await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer();
+      data = new Uint8Array(ab);
+    } else throw new Error('압축 방식 지원 안 됨(' + method + ')');
+    if (!name.endsWith('/')) out[name] = data;
+    p += 46 + nlen + elen + clen;
+  }
+  return out;
+}
+
+
+/* ===== app4_views.js ===== */
+/* =====================================================================
+   4. 화면 — 홈 / 모아보기 / 서류함 / 설정
+   ===================================================================== */
+
+/* ---------- 기록 카드 ---------- */
+function recordCardHtml(r) {
+  const t = typeMeta(r.type);
+  const vn = arr(r.versions).length;
+  const mc = mediaCount(r);
+  const topics = topicsOf(r);
+  return '<article class="rcard" data-act="openRecord" data-id="' + esc(r.id) + '" tabindex="0" aria-label="' + esc(recTitle(r)) + '">' +
+    '<div class="thumb">' + thumbOf(r) + '</div>' +
+    '<div class="rbody">' +
+      '<div class="rtop">' + typeChip(r.type) +
+        '<span class="rdate">' + esc(fmtDateKo(r.date)) + (ageText(r.date) ? ' · ' + esc(ageText(r.date)) : '') + '</span>' +
+        '<button class="star ' + (r.fav ? 'on' : '') + '" data-act="toggleFav" data-id="' + esc(r.id) + '" aria-label="즐겨찾기" aria-pressed="' + (r.fav ? 'true' : 'false') + '">' + (r.fav ? '★' : '☆') + '</button>' +
+      '</div>' +
+      '<h3>' + esc(recTitle(r)) + '</h3>' +
+      (r.childSay ? '<p class="say">“' + esc(r.childSay) + '”</p>' : '') +
+      (r.parentNote ? '<p class="memo"><b>부모 메모</b>' + esc(r.parentNote) + '</p>' : '') +
+      (topics.length ? '<div class="rtags">' + topics.slice(0, 5).map(x => '<span class="rtag">#' + esc(x) + '</span>').join('') + (topics.length > 5 ? '<span class="rtag">+' + (topics.length - 5) + '</span>' : '') + '</div>' : '') +
+      '<div class="rfoot">' + helpedChip(r.helped) +
+        (mc ? '<span class="meta">📎 ' + mc + '</span>' : '') +
+        (vn ? '<span class="meta">🔁 이어쓰기 ' + vn + '</span>' : '') +
+        (r.later ? '<span class="meta badge-soft">🗂 나중에 정리</span>' : '') +
+        '<button class="mini-act" data-act="addVersion" data-id="' + esc(r.id) + '">＋ 이어쓰기</button>' +
+      '</div>' +
+    '</div>' +
+  '</article>';
+}
+function recordListHtml() {
+  const list = filteredRecords();
+  if (!list.length) {
+    if (state.records.length === 0) return '';
+    return emptyBox('🍃', '조건에 맞는 기록이 없어요.<br>검색어나 필터를 바꿔 보세요.',
+      '<button class="btn mini ghost" data-act="resetFilters">필터 초기화</button>');
+  }
+  const groups = [];
+  let cur = null;
+  list.forEach(r => {
+    const k = (r.date || '').slice(0, 7);
+    if (!cur || cur.k !== k) { cur = {k, items: []}; groups.push(cur); }
+    cur.items.push(r);
+  });
+  return '<div class="timeline">' + groups.map(g => {
+    const y = g.k.slice(0, 4), m = Number(g.k.slice(5, 7));
+    return '<div class="month-head"><b>' + y + '년 ' + m + '월</b><span>' + g.items.length + '건</span></div>' +
+      g.items.map(recordCardHtml).join('');
+  }).join('') + '</div>';
+}
+
+/* ---------- 홈 ---------- */
+function ViewHome() {
+  const name = state.profile.childName;
+  const total = state.records.length;
+  const list = filteredRecords();
+  const topics = allTopics();
+  const badge = activeFilterCount();
+  const onboarding = total === 0 ? (
+    '<div class="onboard">' +
+      '<button class="onboard-step" data-act="goSettings"><span class="n">1</span><span><b>아이 이름·생년월일 넣기</b><span>나이별로 기록이 저절로 묶여요 (이 기기·가족 방에만 저장)</span></span></button>' +
+      '<button class="onboard-step" data-act="openQuick"><span class="n">2</span><span><b>사진 한 장으로 첫 기록</b><span>말 한 줄은 나중에 붙여도 괜찮아요</span></span></button>' +
+      '<button class="onboard-step" data-act="goSettings"><span class="n">3</span><span><b>가족 방 코드 정하기</b><span>남편 폰·PC와 실시간으로 함께 봐요</span></span></button>' +
+    '</div>'
+  ) : '';
+  return '<div>' +
+    '<section class="hero' + (total ? ' compact' : '') + '">' +
+      '<p class="hero-greet">' + esc(name ? name + ' · ' + (ageText(dayKey()) || '오늘') : '우리 아이의 오늘') + '</p>' +
+      (total
+        ? '<h1>오늘도 한 줄,<br>남겨 볼까요?<small>사진 한 장이면 충분해요.</small></h1>'
+        : '<h1>오늘 있었던 일,<br>한 줄이면 충분해요<small>사진 한 장, 아이 말 한 줄만 남겨도 저장돼요. 길게 쓰지 않아도 괜찮아요.</small></h1>') +
+      '<button class="cta" data-act="openQuick">＋ 지금 남기기</button>' +
+      '<div class="hero-under"><span class="hint">' + (total ? '기록 ' + total + '건 · 주제 ' + topics.length + '개' : '첫 기록을 남겨 보세요') + '</span>' +
+        '<button class="linkish" data-act="openCollection">📄 모음집 만들기</button></div>' +
+    '</section>' +
+    onboarding +
+    (total === 0 ? '' :
+    '<div class="tools">' +
+      '<div class="search-box"><span class="ic">🔎</span><input id="q" type="search" placeholder="제목·아이 말·부모 메모 검색" value="' + esc(UI.q) + '"></div>' +
+      '<button class="filter-btn ' + (badge ? 'on' : '') + '" data-act="openFilter">⚙ 필터' + (badge ? ' ' + badge : '') + '</button>' +
+    '</div>' +
+    '<div class="chip-row" id="typeChips">' + typeChipsHtml() + '</div>' +
+    '<div id="filterSummary">' + filterSummaryHtml() + '</div>' +
+    '<div id="recordList">' + recordListHtml() + '</div>') +
+  '</div>';
+}
+function typeChipsHtml() {
+  const c = typeCounts(state.records);
+  const chips = TYPES.map(t => {
+    const on = UI.types.indexOf(t.id) >= 0;
+    return '<button class="chip ' + (on ? 'on' : '') + '" data-act="toggleType" data-type="' + esc(t.id) + '">' + t.emoji + ' ' + esc(t.id) + ' <span style="opacity:.65">' + (c[t.id] || 0) + '</span></button>';
+  }).join('');
+  return chips +
+    '<button class="chip ' + (UI.fav ? 'on' : '') + '" data-act="toggleFavFilter">★ 즐겨찾기</button>' +
+    '<button class="chip ' + (UI.later ? 'on' : '') + '" data-act="toggleLaterFilter">🗂 나중에 정리</button>' +
+    '<button class="chip ' + (UI.attach === 'yes' ? 'on' : '') + '" data-act="toggleAttach">📎 첨부 있음</button>';
+}
+function filterSummaryHtml() {
+  const bits = [];
+  if (UI.q.trim()) bits.push('검색: ' + UI.q.trim());
+  UI.types.forEach(t => bits.push(typeMeta(t).emoji + ' ' + t));
+  UI.topics.forEach(t => bits.push('#' + t));
+  if (UI.period !== 'all') {
+    const label = {m3: '최근 3개월', y1: '최근 1년', thisYear: '올해', lastYear: '작년'}[UI.period] || UI.period;
+    bits.push('기간: ' + label);
+  }
+  if (UI.ageRange !== 'all') {
+    const p = UI.ageRange.split('-');
+    bits.push('나이: 만 ' + p[0] + '~' + p[1] + '세');
+  }
+  if (UI.attach === 'yes') bits.push('첨부 있음');
+  if (UI.attach === 'no') bits.push('첨부 없음');
+  if (UI.fav) bits.push('즐겨찾기');
+  if (UI.later) bits.push('나중에 정리');
+  if (!bits.length) return '';
+  return '<div class="filter-summary"><span>적용 중</span>' + bits.map(b => '<span class="fchip">' + esc(b) + '</span>').join('') +
+    '<button class="chip" style="padding:3px 8px;font-size:10.5px" data-act="resetFilters">초기화</button></div>';
+}
+function refreshList() {
+  const box = $('#recordList');
+  if (box) box.innerHTML = recordListHtml();
+  const sum = $('#filterSummary');
+  if (sum) sum.innerHTML = filterSummaryHtml();
+  const chips = $('#typeChips');
+  if (chips) chips.innerHTML = typeChipsHtml();
+  const fb = $('.filter-btn');
+  const badge = activeFilterCount();
+  if (fb) { fb.classList.toggle('on', badge > 0); fb.innerHTML = '⚙ 필터' + (badge ? ' ' + badge : ''); }
+}
+
+/* ---------- 모아보기 ---------- */
+function groupPeriods(mode) {
+  const map = {};
+  sortRecords(state.records).forEach(r => {
+    const d = parseDay(r.date);
+    if (!d) return;
+    let key, label, order;
+    if (mode === 'year') {
+      key = String(d.getFullYear()); label = d.getFullYear() + '년'; order = key;
+    } else if (mode === 'semester') {
+      const y = d.getFullYear(), m = d.getMonth() + 1;
+      if (m >= 3 && m <= 8) { key = y + '-H1'; label = y + '학년도 1학기 (3~8월)'; order = y + '-1'; }
+      else if (m >= 9) { key = y + '-H2'; label = y + '학년도 2학기 (9~2월)'; order = y + '-2'; }
+      else { key = (y - 1) + '-H2'; label = (y - 1) + '학년도 2학기 (9~2월)'; order = (y - 1) + '-2'; }
+    } else {
+      key = r.date.slice(0, 7); label = ymdLabel(d); order = key;
+    }
+    if (!map[key]) map[key] = {key, label, order, records: []};
+    map[key].records.push(r);
+  });
+  return Object.keys(map).map(k => map[k]).sort((a, b) => b.order < a.order ? -1 : b.order > a.order ? 1 : 0);
+}
+function ymdLabel(d) { return d.getFullYear() + '년 ' + (d.getMonth() + 1) + '월'; }
+
+function ViewMap() {
+  const topics = allTopics();
+  const isTopics = UI.mv === 'topics';
+  let body = '';
+  if (isTopics) {
+    body = topics.length
+      ? '<div class="topic-grid">' + topics.map(t => {
+          const kinds = Object.keys(t.kinds).map(k => typeMeta(k).emoji).join('');
+          return '<button class="topic-card" data-act="openTopic" data-topic="' + esc(t.name) + '">' +
+            '<div class="tname">#' + esc(t.name) + '</div>' +
+            '<div class="tcount">기록 ' + t.count + '건</div>' +
+            '<div class="temojis">' + kinds + '</div>' +
+            '<div class="tlast">최근 ' + esc(fmtDateKo(t.last)) + (ageText(t.last) ? ' · ' + esc(ageText(t.last)) : '') + '</div>' +
+          '</button>';
+        }).join('') + '</div>'
+      : emptyBox('🏷️', '주제 태그를 붙이면 여기에 자동으로 모여요.<br>기록을 남길 때 #로봇, #수학처럼 붙여 보세요.',
+          '<button class="btn mini" data-act="openQuick">＋ 기록 남기기</button>');
+  } else {
+    const mode = UI.periodMode;
+    const groups = groupPeriods(mode);
+    body = '<div class="seg" style="margin-top:10px" id="periodSeg">' +
+      [['month', '월별'], ['semester', '학기별'], ['year', '연도별']].map(([id, lb]) =>
+        '<button data-act="periodMode" data-mode="' + id + '" class="' + (mode === id ? 'on' : '') + '">' + lb + '</button>').join('') + '</div>' +
+      (groups.length ? '<div class="period-list">' + groups.map(g => {
+        const thumbs = [];
+        g.records.forEach(r => mediaImages(r).forEach(m => { if (thumbs.length < 4) thumbs.push(m); }));
+        return '<button class="period-block" data-act="openPeriod" data-key="' + esc(g.key) + '">' +
+          '<div><div class="pl">' + esc(g.label) + '</div>' +
+          '<div class="pc">기록 ' + g.records.length + '건 · ' + TYPES.filter(t => g.records.some(r => r.type === t.id)).map(t => t.emoji).join('') + '</div></div>' +
+          '<div class="period-thumbs">' + (thumbs.length ? thumbs.map(m => '<img src="' + m.data + '" alt="">').join('') : '<span class="ph">🗒</span>') + '</div></button>';
+      }).join('') + '</div>' : emptyBox('🗓️', '기록이 쌓이면 월별·학기별·연도별로 돌아볼 수 있어요.')) +
+      '<div class="section"><button class="btn soft" style="width:100%" data-act="openCollection">📄 기간·주제 골라 모음집 만들기</button></div>';
+  }
+  return '<div>' +
+    '<div class="section-head" style="margin-top:6px"><h2>🗺️ 모아보기</h2><span class="sub">주제·시기별로 저절로 모여요</span></div>' +
+    '<div class="stats">' +
+      '<div class="stat"><b>' + state.records.length + '</b><span>기록</span></div>' +
+      '<div class="stat"><b>' + topics.length + '</b><span>주제</span></div>' +
+      '<div class="stat"><b>' + state.docs.length + '</b><span>서류</span></div>' +
+    '</div>' +
+    '<div class="mv-tabs"><button class="' + (isTopics ? 'on' : '') + '" data-act="mvTab" data-mv="topics">주제 지도</button>' +
+      '<button class="' + (!isTopics ? 'on' : '') + '" data-act="mvTab" data-mv="timeline">돌아보기 타임라인</button></div>' +
+    body +
+  '</div>';
+}
+
+/* ---------- 서류함 ---------- */
+function docCardHtml(d) {
+  const files = arr(d.media).filter(m => m.kind !== 'image' || true);
+  return '<button class="doc-card" data-act="openDoc" data-id="' + esc(d.id) + '">' +
+    '<div class="doc-ic">' + (arr(d.media).some(m => m.kind === 'image') ? '🖼️' : '📄') + '</div>' +
+    '<div style="min-width:0;flex:1">' +
+      '<h3>' + esc(d.name) + '</h3>' +
+      '<div class="dmeta">' + [d.issuer, d.period || (d.issuedAt ? fmtDate(d.issuedAt) + ' 발급' : ''), d.location ? '보관: ' + d.location : ''].filter(Boolean).map(esc).join(' · ') + '</div>' +
+      (d.note ? '<div class="dnote">' + esc(d.note).slice(0, 80) + '</div>' : '') +
+      (files.length ? '<div class="doc-file">📎 ' + files.length + '개 파일</div>' : '') +
+    '</div>' +
+    '<div class="dright">' + statusChip(d.status) + '</div>' +
+  '</button>';
+}
+function ViewDocs() {
+  if (state.settings.docPin && UI.locked) {
+    return '<div>' +
+      '<div class="section-head" style="margin-top:6px"><h2>📁 서류함</h2><span class="sub">학교·기관 공식서류</span></div>' +
+      '<div class="card lock-wrap">' +
+        '<div class="lock-ic">🔒</div>' +
+        '<h2>서류함이 잠겨 있어요</h2>' +
+        '<p class="hint">설정에서 정한 4자리 PIN을 넣어 주세요.<br>일상 기록(홈)은 잠기지 않아요.</p>' +
+        '<div style="margin:16px 0 10px"><input class="pin-input" id="pinInput" type="password" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="서류함 PIN"></div>' +
+        '<button class="btn" data-act="unlockDocs">열기</button>' +
+        '<div id="pinMsg" class="hint" style="margin-top:8px;color:var(--rose)"></div>' +
+      '</div></div>';
+  }
+  const q = UI.docQ.trim().toLowerCase();
+  const list = state.docs.slice().sort((a, b) => ((b.issuedAt || b.createdAt) > (a.issuedAt || a.createdAt) ? 1 : -1)).filter(d => {
+    if (UI.docStatus !== 'all' && d.status !== UI.docStatus) return false;
+    if (!q) return true;
+    return [d.name, d.issuer, d.period, d.note, d.location].join(' ').toLowerCase().indexOf(q) >= 0;
+  });
+  return '<div>' +
+    '<div class="section-head" style="margin-top:6px"><h2>📁 서류함</h2><span class="sub">일상 기록과 따로 보관</span></div>' +
+    '<div class="card" style="display:flex;gap:10px;align-items:center">' +
+      '<div style="flex:1"><b style="font-size:13px">공식서류는 여기에만</b><div class="hint">성적·생활기록부·수료증·기관 피드백을 원본 그대로 보관해요.</div></div>' +
+      '<button class="btn" data-act="openDocForm">＋ 서류</button>' +
+    '</div>' +
+    '<div class="tools"><div class="search-box"><span class="ic">🔎</span><input id="docQ" type="search" placeholder="문서명·발급기관·보관 위치" value="' + esc(UI.docQ) + '"></div></div>' +
+    '<div class="chip-row" id="docStatusChips">' + ['all'].concat(DOC_STATUS).map(s =>
+      '<button class="chip ' + (UI.docStatus === s ? 'on' : '') + '" data-act="docStatus" data-status="' + s + '">' + (s === 'all' ? '전체' : s) + '</button>').join('') + '</div>' +
+    '<div class="section" id="docList">' + (list.length
+      ? '<div class="period-list">' + list.map(docCardHtml).join('') + '</div>'
+      : emptyBox('🗂️', state.docs.length ? '조건에 맞는 서류가 없어요.' : '아직 보관한 서류가 없어요.<br>생활기록부·수료증·기관 피드백을 원본으로 모아 두세요.',
+          '<button class="btn mini" data-act="openDocForm">＋ 서류 넣기</button>')) + '</div>' +
+  '</div>';
+}
+
+/* ---------- 설정 ---------- */
+function stateBytes() {
+  try { return new Blob([JSON.stringify(state)]).size; } catch (e) { return JSON.stringify(state).length; }
+}
+function ViewSettings() {
+  const room = window.GASync ? window.GASync.room : '';
+  const status = window.GASync ? window.GASync.status : 'local';
+  const pbytes = window.GASync ? window.GASync.payloadBytes() : 0;
+  const warn = window.GASync ? window.GASync.warnBytes : 4.2 * 1024 * 1024;
+  const pct = Math.min(100, Math.round(pbytes / warn * 100));
+  const meterCls = pbytes > warn ? 'over' : pbytes > warn * 0.75 ? 'warn' : '';
+  const name = state.profile.childName;
+  return '<div>' +
+    '<div class="section-head" style="margin-top:6px"><h2>⚙️ 설정</h2><span class="sub">가족 공유·백업</span></div>' +
+
+    '<div class="set-group"><h2>👧 아이 정보</h2>' +
+      '<p class="hint" style="margin-bottom:10px">이름과 생년월일은 <b>이 기기와 가족 방 안에만</b> 저장돼요. 앱 코드나 공개 저장소에는 절대 들어가지 않아요.</p>' +
+      '<div class="row"><div class="field" style="margin:0"><label>이름(또는 애칭)</label><input class="input" id="childName" value="' + esc(name) + '" placeholder="예: 콩이" maxlength="20"></div>' +
+      '<div class="field" style="margin:0"><label>생년월일</label><input class="input" id="childBirth" type="date" value="' + esc(state.profile.birthDate) + '"></div></div>' +
+      '<div class="hint" style="margin-top:8px">' + (name ? esc(name) + ' · ' + (ageText(dayKey()) || '나이 계산 전') : '아직 이름을 넣지 않았어요') + '</div>' +
+      '<button class="btn mini soft" style="margin-top:10px" data-act="saveProfile">저장</button>' +
+    '</div>' +
+
+    '<div class="set-group"><h2>👨‍👩‍👧 가족 방 (실시간 공유)</h2>' +
+      '<div class="sync-line"><span id="syncDot">' + (status === 'online' ? '🟢' : status === 'connecting' ? '🟡' : status === 'offline' ? '🟠' : status === 'error' ? '🔴' : '⚪') + '</span><span id="syncStateText">' + esc(window.GASync ? window.GASync.statusText(status) : '') + '</span></div>' +
+      (room
+        ? '<div style="margin-top:10px"><div class="tag-label" style="margin-bottom:5px">우리 가족 방 코드</div>' +
+            '<div class="code-box" id="roomCode">' + esc(room) + '</div>' +
+            '<div class="hint" style="margin-top:6px">이 코드를 아는 기기만 함께 볼 수 있어요. 가족에게만 알려 주세요.</div>' +
+            '<div style="display:flex;gap:6px;margin-top:9px;flex-wrap:wrap">' +
+              '<button class="btn mini ghost" data-act="copyRoom">코드 복사</button>' +
+              '<button class="btn mini ghost" data-act="pushNow">⬆ 지금 올리기</button>' +
+              '<button class="btn mini ghost" data-act="pullNow">⬇ 가족 방에서 받기</button>' +
+              '<button class="btn mini ghost" data-act="leaveRoom">연결 끊기</button>' +
+            '</div>' +
+            '<div class="meter ' + meterCls + '" style="margin-top:12px"><i style="width:' + pct + '%"></i></div>' +
+            '<div class="hint" style="margin-top:4px">가족 방 데이터 <b id="syncSize">' + bytesText(pbytes) + '</b> / 권장 4.2MB · 사진은 800px로 줄여 올려요' +
+              (pbytes > warn ? ' <span style="color:var(--rose)">용량이 커요. 오래된 사진은 ZIP으로 백업하고 기록을 정리해 주세요.</span>' : '') + '</div>' +
+          '</div>'
+        : '<div style="margin-top:10px">' +
+            '<div class="field" style="margin:0 0 8px"><label class="lab">가족 방 코드 정하기</label><input class="input" id="roomInput" placeholder="예: growth-family-x7k2m9" maxlength="48" autocapitalize="off"></div>' +
+            '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
+              '<button class="btn mini" data-act="joinRoom">이 코드로 연결</button>' +
+              '<button class="btn mini ghost" data-act="makeRoom">코드 자동 만들기</button>' +
+            '</div>' +
+            '<div class="hint" style="margin-top:8px">코드를 정하면 이 기기의 기록이 가족 방으로 올라가고, 같은 코드를 넣은 폰·PC에서 실시간으로 보여요. 코드를 정하지 않으면 이 기기에만 저장돼요.</div>' +
+          '</div>') +
+    '</div>' +
+
+    '<div class="set-group"><h2>🔒 서류함 잠금</h2>' +
+      '<p class="hint">' + (state.settings.docPin ? 'PIN이 설정되어 있어요. 서류함을 열 때 4자리 PIN을 물어요.' : 'PIN을 정하면 서류함을 열 때 4자리를 물어요. (선택)') + '</p>' +
+      '<div style="display:flex;gap:6px;margin-top:9px;flex-wrap:wrap">' +
+        '<button class="btn mini ghost" data-act="setPin">' + (state.settings.docPin ? 'PIN 바꾸기' : 'PIN 정하기') + '</button>' +
+        (state.settings.docPin ? '<button class="btn mini ghost" data-act="lockNow">지금 잠그기</button><button class="btn mini ghost" data-act="clearPin">PIN 없애기</button>' : '') +
+      '</div>' +
+    '</div>' +
+
+    '<div class="set-group"><h2>💾 보관 · 백업</h2>' +
+      '<p class="hint">사진·음성 <b>원본 파일</b> + 전체 데이터 + CSV + 앱 없이 읽는 HTML/Markdown + 복원 안내를 ZIP 한 파일로 내려받아요. 외부 링크가 아니라 이 기기에서 바로 만들어요.</p>' +
+      '<div class="hint" style="margin-top:6px">지금 데이터 <b>' + bytesText(stateBytes()) + '</b> · 기록 ' + state.records.length + '건 · 서류 ' + state.docs.length + '건</div>' +
+      '<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">' +
+        '<button class="btn" data-act="exportZip">⬇ 전체 내보내기 (ZIP)</button>' +
+        '<button class="btn ghost" data-act="exportJson">JSON만</button>' +
+        '<button class="btn ghost" data-act="importFile">⬆ 복원 (JSON/ZIP)</button>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="set-group"><h2>🛠 그 밖에</h2>' +
+      '<div class="set-row"><div class="sl"><b>앱 정보</b><span>우리집 성장 기록 v' + APP_VERSION + ' · 검색엔진 노출 차단(noindex)</span></div></div>' +
+      '<div class="set-row"><div class="sl"><b>모든 기록 지우기</b><span>이 기기에서만 지워요. 가족 방 기록은 [지금 올리기] 전까지 남아 있어요.</span></div>' +
+        '<button class="btn mini danger" data-act="wipeAll">지우기</button></div>' +
+    '</div>' +
+
+    '<p class="hint" style="margin:16px 4px 0">이 앱은 가족이 직접 남긴 기록을 모으는 곳이에요. 평가·점수·다른 아이와의 비교는 만들지 않았어요. 모음집·출력물에는 “가족 작성 자료”라고 표시돼요.</p>' +
+  '</div>';
+}
+
+
+/* ===== app5_actions.js ===== */
+/* =====================================================================
+   5. 동작 — 기록/이어쓰기/서류함/모아보기/모음집/백업·복원/설정
+   ===================================================================== */
+
+/* ---------- 폼 조각 ---------- */
+function formVal(id) { const el = $('#' + id); return el ? String(el.value == null ? '' : el.value) : ''; }
+function typePickHtml() {
+  return TYPES.map(t => '<button class="chip ' + (FORM.type === t.id ? 'on' : '') + '" data-act="pickType" data-type="' + esc(t.id) + '">' + t.emoji + ' ' + esc(t.id) + '</button>').join('');
+}
+function helpedPickHtml() {
+  return '<div class="seg" id="fHelpPick">' + HELPED.map(h =>
+    '<button data-act="pickHelped" data-help="' + h.id + '" class="' + (FORM.helped === h.id ? 'on' : '') + '">' + (h.id === 'unknown' ? '모름' : h.emoji + ' ' + h.label) + '</button>').join('') + '</div>';
+}
+function topicPickHtml() {
+  const chosen = FORM.topics;
+  const suggested = PRESET_TOPICS.filter(t => chosen.map(x => x.toLowerCase()).indexOf(t.toLowerCase()) < 0);
+  return '<div class="topic-chips" id="topicPick">' +
+    chosen.map(t => '<button class="chip acc" data-act="rmTopic" data-topic="' + esc(t) + '">#' + esc(t) + ' ✕</button>').join('') +
+    (suggested.length ? '<span class="tag-label" style="align-self:center;margin-left:2px">추천</span>' +
+      suggested.slice(0, 6).map(t => '<button class="chip" data-act="addTopicName" data-topic="' + esc(t) + '">#' + esc(t) + '</button>').join('') : '') +
+  '</div>';
+}
+function mediaButtonsHtml() {
+  return '<div class="media-btns">' +
+    '<button class="media-btn" data-act="pickPhoto"><span class="i">📷</span>사진</button>' +
+    '<button class="media-btn" data-act="pickFile"><span class="i">📎</span>파일</button>' +
+    '<button class="media-btn rec" data-act="recStart"><span class="i">🎙️</span>음성 녹음</button>' +
+  '</div>' +
+  '<div id="recSlot" style="margin-top:8px"></div>' +
+  '<div class="media-list" id="formMedia"></div>' +
+  '<div class="hint" id="formSize" style="margin-top:6px"></div>';
+}
+
+/* ---------- 1분 빠른 기록 ---------- */
+function openQuick() {
+  FORM.media = [];
+  FORM.type = '생각';
+  FORM.topics = [];
+  FORM.helped = 'unknown';
+  FORM.editId = '';
+  const html =
+    '<div style="background:var(--accent-soft);border-radius:12px;padding:10px 12px;margin-bottom:14px">' +
+      '<b style="font-size:12.5px;color:var(--accent)">1분 기록</b>' +
+      '<div class="hint" style="margin-top:2px">사진 한 장, 말 한 줄만 있어도 저장돼요. 나머지는 비워 두세요.</div></div>' +
+    '<div class="field"><label class="lab">사진 · 파일 · 목소리 <span class="opt">선택</span></label>' + mediaButtonsHtml() + '</div>' +
+    '<div class="field"><label for="fSay">아이 말 그대로 <span class="opt">선택</span></label>' +
+      '<textarea class="textarea tall" id="fSay" placeholder="예: “엄마, 이 로봇은 다리가 네 개라서 안 넘어져!”"></textarea>' +
+      '<div class="hint" style="margin-top:4px">아이가 한 말을 그대로 적어 주세요. 엄마의 해석은 아래 부모 메모에 따로 남겨요.</div></div>' +
+    '<div class="field"><label for="fNote">부모 메모 <span class="opt">선택</span></label>' +
+      '<textarea class="textarea" id="fNote" placeholder="엄마·아빠가 본 점, 도와준 부분, 나중에 덧붙이고 싶은 말"></textarea></div>' +
+    '<div class="field"><label class="lab">활동 날짜</label><input class="input" id="fDate" type="date" value="' + dayKey() + '"></div>' +
+    '<div class="field"><label class="lab">유형</label><div class="chip-row" id="fTypePick">' + typePickHtml() + '</div></div>' +
+    '<div class="field"><label class="lab">주제 태그 <span class="opt">자유롭게</span></label>' + topicPickHtml() +
+      '<div class="tag-add"><input class="input" id="fTopicInput" placeholder="예: 공룡, 블록, 요리" maxlength="24" enterkeyhint="done">' +
+      '<button class="btn mini soft" data-act="addTopic">추가</button></div></div>' +
+    '<div class="field"><label class="lab">혼자 했나요?</label>' + helpedPickHtml() + '</div>' +
+    '<div class="field"><label for="fTitle">제목 <span class="opt">비우면 자동</span></label>' +
+      '<input class="input" id="fTitle" placeholder="비우면 날짜 + 유형으로 붙여요" maxlength="120"></div>' +
+    '<div class="sheet-foot"><button class="btn ghost" data-act="closeSheet" style="flex:.8">취소</button>' +
+      '<button class="btn" data-act="saveRecord" style="flex:1.6">저장</button></div>';
+  openSheet(html, {title: '＋ 지금 남기기', onMount: () => { renderFormMedia(); renderRecSlot(); const s = $('#fSay'); if (s) s.focus(); }});
+}
+
+function openEdit(id) {
+  const r = state.records.find(x => x.id === id);
+  if (!r) return;
+  FORM.media = arr(r.media).map(m => Object.assign({}, m));
+  FORM.type = r.type;
+  FORM.topics = topicsOf(r);
+  FORM.helped = r.helped;
+  FORM.editId = r.id;
+  const html =
+    '<div class="field"><label class="lab">사진 · 파일 · 목소리</label>' + mediaButtonsHtml() + '</div>' +
+    '<div class="field"><label for="fSay">아이 말 그대로</label><textarea class="textarea tall" id="fSay">' + esc(r.childSay) + '</textarea></div>' +
+    '<div class="field"><label for="fNote">부모 메모</label><textarea class="textarea" id="fNote">' + esc(r.parentNote) + '</textarea></div>' +
+    '<div class="field"><label class="lab">활동 날짜</label><input class="input" id="fDate" type="date" value="' + esc(r.date) + '"></div>' +
+    '<div class="field"><label class="lab">유형</label><div class="chip-row" id="fTypePick">' + typePickHtml() + '</div></div>' +
+    '<div class="field"><label class="lab">주제 태그</label>' + topicPickHtml() +
+      '<div class="tag-add"><input class="input" id="fTopicInput" placeholder="예: 공룡, 블록, 요리" maxlength="24"><button class="btn mini soft" data-act="addTopic">추가</button></div></div>' +
+    '<div class="field"><label class="lab">혼자 했나요?</label>' + helpedPickHtml() + '</div>' +
+    '<div class="field"><label for="fTitle">제목</label><input class="input" id="fTitle" value="' + esc(r.title) + '" maxlength="120"></div>' +
+    '<div class="sheet-foot"><button class="btn ghost" data-act="closeSheet" style="flex:.8">취소</button>' +
+      '<button class="btn" data-act="saveRecord" style="flex:1.6">수정 저장</button></div>';
+  openSheet(html, {title: '기록 수정', onMount: () => { renderFormMedia(); renderRecSlot(); }});
+}
+
+function saveRecord() {
+  const say = formVal('fSay').trim();
+  const note = formVal('fNote').trim();
+  const title = formVal('fTitle').trim();
+  const date = parseDay(formVal('fDate')) ? formVal('fDate') : dayKey();
+  if (!title && !say && !note && !FORM.media.length) {
+    toast('사진 한 장이나 한 줄만 있어도 저장할 수 있어요.');
+    return;
+  }
+  const draft = {
+    title: title || autoTitle({date, type: FORM.type}),
+    date, type: FORM.type, topics: FORM.topics.slice(),
+    childSay: say, parentNote: note, helped: FORM.helped,
+    media: FORM.media.map(m => Object.assign({}, m)),
+  };
+  if (FORM.editId) {
+    const r = state.records.find(x => x.id === FORM.editId);
+    if (!r) return;
+    Object.assign(r, draft, {updatedAt: Date.now()});
+    const fixed = sanitizeRecord(r);
+    if (fixed) Object.assign(r, fixed);
+    save();
+    closeAllSheets();
+    render();
+    toast('기록을 고쳤어요.');
+    return;
+  }
+  const rec = sanitizeRecord(Object.assign({id: uid('rec'), versions: [], fav: false, later: false, createdAt: Date.now()}, draft));
+  if (!rec) { toast('저장하지 못했어요. 내용을 확인해 주세요.'); return; }
+  state.records.push(rec);
+  save();
+  closeAllSheets();
+  go('home');
+  toast('기록을 남겼어요' + (state.profile.childName ? '' : ' · 설정에서 아이 이름을 넣으면 나이별로 모여요'));
+}
+
+/* ---------- 이어쓰기(버전) ---------- */
+function openVersion(recordId) {
+  const r = state.records.find(x => x.id === recordId);
+  if (!r) return;
+  FORM.media = [];
+  FORM.versionOf = recordId;
+  const html =
+    '<div style="background:var(--sun-soft);border-radius:12px;padding:10px 12px;margin-bottom:13px">' +
+      '<b style="font-size:12.5px;color:#8A601C">이어쓰기 · ' + esc(recTitle(r)) + '</b>' +
+      '<div class="hint" style="margin-top:2px">다음 시도, 달라진 생각, 새 버전을 사진이나 한 줄로 붙이면 과정이 카드 안에 쌓여요.</div></div>' +
+    '<div class="field"><label class="lab">사진 · 파일 · 목소리 <span class="opt">선택</span></label>' + mediaButtonsHtml() + '</div>' +
+    '<div class="field"><label for="vSay">아이 말 · 달라진 생각 <span class="opt">선택</span></label>' +
+      '<textarea class="textarea" id="vSay" placeholder="예: “이번엔 다리를 세 개로 해 봤는데 넘어져. 다시 해볼래.”"></textarea></div>' +
+    '<div class="field"><label for="vNote">바꾼 이유 · 부모 메모 <span class="opt">선택</span></label>' +
+      '<textarea class="textarea" id="vNote" placeholder="무엇이 달라졌는지, 왜 바꿨는지 한 줄"></textarea></div>' +
+    '<div class="field"><label class="lab">날짜</label><input class="input" id="vDate" type="date" value="' + dayKey() + '"></div>' +
+    '<div class="sheet-foot"><button class="btn ghost" data-act="closeSheet" style="flex:.8">취소</button>' +
+      '<button class="btn" data-act="saveVersion" style="flex:1.6">이어쓰기 저장</button></div>';
+  openSheet(html, {title: '＋ 다음 시도 이어쓰기', onMount: () => { renderFormMedia(); renderRecSlot(); const s = $('#vSay'); if (s) s.focus(); }});
+}
+function saveVersion() {
+  const r = state.records.find(x => x.id === FORM.versionOf);
+  if (!r) return;
+  const say = formVal('vSay').trim();
+  const note = formVal('vNote').trim();
+  if (!say && !note && !FORM.media.length) { toast('사진이나 한 줄만 있으면 이어쓸 수 있어요.'); return; }
+  const v = sanitizeVersion({
+    id: uid('ver'), date: parseDay(formVal('vDate')) ? formVal('vDate') : dayKey(),
+    childSay: say, note, media: FORM.media.map(m => Object.assign({}, m)), at: Date.now(),
+  });
+  if (!v) return;
+  r.versions = arr(r.versions).concat([v]);
+  r.updatedAt = Date.now();
+  save();
+  const id = r.id;
+  render();
+  openRecord(id);
+  toast('이어쓰기를 붙였어요.');
+}
+
+/* ---------- 기록 상세 ---------- */
+function mediaBlockHtml(m) {
+  if (!m || !m.data) return '';
+  if (m.kind === 'image') return '<a href="' + m.data + '" target="_blank" rel="noopener" style="display:block;width:88px;height:88px;border-radius:10px;overflow:hidden;border:1px solid var(--line)"><img src="' + m.data + '" alt="' + esc(m.name) + '" style="width:100%;height:100%;object-fit:cover"></a>';
+  if (m.kind === 'audio') return '<div style="min-width:160px"><audio controls preload="metadata" src="' + m.data + '" style="width:100%"></audio><div class="hint">🎙️ ' + mmss(m.dur) + ' · ' + bytesText(m.size) + '</div></div>';
+  return '<a href="' + m.data + '" download="' + esc(m.name) + '" style="display:inline-flex;gap:5px;align-items:center;font-size:12px;font-weight:800;color:var(--blue);background:var(--blue-soft);border-radius:9px;padding:7px 10px">📄 ' + esc(m.name) + ' <span class="hint">' + bytesText(m.size) + '</span></a>';
+}
+function openRecord(id) {
+  const r = state.records.find(x => x.id === id);
+  if (!r) return;
+  const topics = topicsOf(r);
+  const versions = arr(r.versions);
+  const html =
+    '<div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:10px">' + typeChip(r.type) +
+      '<span class="rdate">' + esc(fmtDate(r.date)) + (ageText(r.date) ? ' · ' + esc(ageText(r.date)) : '') + '</span>' + helpedChip(r.helped) + '</div>' +
+    '<h3 style="font-size:17px;margin-bottom:8px">' + esc(recTitle(r)) + '</h3>' +
+    (topics.length ? '<div class="rtags" style="margin-bottom:12px">' + topics.map(t => '<button class="chip acc" style="font-size:11px;padding:4px 8px" data-act="openTopic" data-topic="' + esc(t) + '">#' + esc(t) + '</button>').join('') + '</div>' : '') +
+    (r.childSay ? '<div style="background:var(--accent-soft);border-radius:12px;padding:11px 13px;margin-bottom:9px"><div class="tag-label" style="color:var(--accent);margin-bottom:3px">아이 말 그대로</div><div style="font-size:14px;line-height:1.6;white-space:pre-wrap">“' + esc(r.childSay) + '”</div></div>' : '') +
+    (r.parentNote ? '<div style="background:var(--bg-2);border-radius:12px;padding:11px 13px;margin-bottom:9px"><div class="tag-label" style="margin-bottom:3px">부모 메모</div><div style="font-size:12.8px;line-height:1.6;white-space:pre-wrap;color:var(--ink-2)">' + esc(r.parentNote) + '</div></div>' : '') +
+    (arr(r.media).length ? '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">' + arr(r.media).map(mediaBlockHtml).join('') + '</div>' : '') +
+    (versions.length ? '<div class="section-head" style="margin:16px 0 6px"><h2 style="font-size:13px">🔁 이어쓰기 ' + versions.length + '번</h2>' +
+        '<button class="linkish" data-act="openCompare" data-id="' + esc(r.id) + '">나란히 비교</button></div>' +
+      '<div style="border-left:2px solid var(--line);margin-left:6px;padding-left:12px">' +
+        versions.map((v, i) => '<div style="margin-bottom:12px">' +
+          '<div style="font-size:11px;font-weight:900;color:var(--ink-3)">' + (i + 1) + '번째 · ' + esc(fmtDate(v.date)) + '</div>' +
+          (v.childSay ? '<div style="font-size:13px;margin-top:2px;white-space:pre-wrap">“' + esc(v.childSay) + '”</div>' : '') +
+          (v.note ? '<div class="hint" style="margin-top:3px;white-space:pre-wrap">' + esc(v.note) + '</div>' : '') +
+          (arr(v.media).length ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">' + arr(v.media).map(mediaBlockHtml).join('') + '</div>' : '') +
+          '<button class="chip" style="margin-top:6px;padding:3px 8px;font-size:10.5px" data-act="delVersion" data-id="' + esc(r.id) + '" data-ver="' + esc(v.id) + '">이 이어쓰기 지우기</button>' +
+        '</div>').join('') + '</div>' : '') +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px">' +
+      '<button class="btn mini" data-act="addVersion" data-id="' + esc(r.id) + '">＋ 이어쓰기</button>' +
+      '<button class="btn mini ghost" data-act="toggleLater" data-id="' + esc(r.id) + '">' + (r.later ? '🗂 나중에 정리 해제' : '🗂 나중에 정리') + '</button>' +
+      '<button class="btn mini ghost" data-act="editRecord" data-id="' + esc(r.id) + '">수정</button>' +
+      '<button class="btn mini ghost" data-act="delRecord" data-id="' + esc(r.id) + '">삭제</button>' +
+    '</div>';
+  openSheet(html, {title: ''});
+}
+function openCompare(id) {
+  const r = state.records.find(x => x.id === id);
+  if (!r) return;
+  const cols = [{label: '처음', date: r.date, childSay: r.childSay, note: r.parentNote, media: arr(r.media)}]
+    .concat(arr(r.versions).map((v, i) => ({label: (i + 1) + '번째', date: v.date, childSay: v.childSay, note: v.note, media: arr(v.media)})));
+  const html = '<div class="hint" style="margin-bottom:10px">가로로 넘기며 과정을 나란히 볼 수 있어요.</div>' +
+    '<div style="display:flex;gap:9px;overflow-x:auto;padding-bottom:8px">' + cols.map((c, i) =>
+      '<div style="flex:none;width:190px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:10px">' +
+        '<div class="tag-label">' + (i === 0 ? '처음' : c.label) + ' · ' + esc(fmtDate(c.date)) + '</div>' +
+        (c.childSay ? '<div style="font-size:12.5px;margin-top:5px;white-space:pre-wrap">“' + esc(c.childSay) + '”</div>' : '<div class="hint" style="margin-top:5px">말 기록 없음</div>') +
+        (c.note ? '<div class="hint" style="margin-top:5px;white-space:pre-wrap">' + esc(c.note) + '</div>' : '') +
+        (c.media.length ? '<div style="margin-top:7px">' + c.media.slice(0, 2).map(m => '<img src="' + (m.data || '') + '" alt="" style="width:100%;border-radius:8px;margin-bottom:4px">').join('') + '</div>' : '') +
+      '</div>').join('') + '</div>' +
+    '<div class="sheet-foot"><button class="btn ghost" data-act="openRecord" data-id="' + esc(r.id) + '">닫기</button></div>';
+  openSheet(html, {title: '나란히 비교 · ' + recTitle(r)});
+}
+
+/* ---------- 필터 ---------- */
+function openFilter() {
+  const topics = allTopics();
+  const ages = [['all', '전체'], ['2-3', '만 2~3세'], ['4-5', '만 4~5세'], ['6-7', '만 6~7세'], ['8-9', '만 8~9세'], ['10-12', '만 10~12세']];
+  const html =
+    '<div class="field"><label class="lab">시기</label><div class="chip-row" id="fltPeriod">' +
+      [['all', '전체'], ['3m', '최근 3개월'], ['1y', '최근 1년'], ['thisYear', '올해'], ['lastYear', '작년']].map(([id, lb]) =>
+        '<button class="chip ' + (UI.period === id ? 'on' : '') + '" data-act="fltPeriod" data-v="' + id + '">' + lb + '</button>').join('') + '</div></div>' +
+    '<div class="field"><label class="lab">나이(시기)</label><div class="chip-row" id="fltAge">' +
+      ages.map(([id, lb]) => '<button class="chip ' + (UI.ageRange === id ? 'on' : '') + '" data-act="fltAge" data-v="' + id + '">' + lb + '</button>').join('') + '</div>' +
+      (state.profile.birthDate ? '' : '<div class="hint" style="margin-top:4px">생년월일을 넣으면 나이별로도 볼 수 있어요.</div>') + '</div>' +
+    '<div class="field"><label class="lab">유형</label><div class="chip-row" id="fltTypes">' +
+      TYPES.map(t => '<button class="chip ' + (UI.types.indexOf(t.id) >= 0 ? 'on' : '') + '" data-act="fltType" data-v="' + esc(t.id) + '">' + t.emoji + ' ' + esc(t.id) + '</button>').join('') + '</div></div>' +
+    '<div class="field"><label class="lab">주제</label><div class="tag-pick" id="fltTopics">' +
+      (topics.length ? topics.map(t => '<button class="chip ' + (UI.topics.indexOf(t.name) >= 0 ? 'on' : '') + '" data-act="fltTopic" data-v="' + esc(t.name) + '">#' + esc(t.name) + ' <span style="opacity:.6">' + t.count + '</span></button>').join('') : '<span class="hint">아직 주제 태그가 없어요.</span>') + '</div></div>' +
+    '<div class="field"><label class="lab">첨부</label><div class="chip-row" id="fltAttach">' +
+      [['all', '전체'], ['yes', '첨부 있음'], ['no', '첨부 없음']].map(([id, lb]) =>
+        '<button class="chip ' + (UI.attach === id ? 'on' : '') + '" data-act="fltAttach" data-v="' + id + '">' + lb + '</button>').join('') + '</div></div>' +
+    '<div class="field"><label class="lab">그 밖에</label><div class="chip-row" id="fltFlags">' +
+      '<button class="chip ' + (UI.fav ? 'on' : '') + '" data-act="fltFav">★ 즐겨찾기만</button>' +
+      '<button class="chip ' + (UI.later ? 'on' : '') + '" data-act="fltLater">🗂 나중에 정리할 기록</button></div></div>' +
+    '<div class="hint" id="fltCount">조건에 맞는 기록 ' + filteredRecords().length + '건</div>' +
+    '<div class="sheet-foot"><button class="btn ghost" data-act="resetFilters" style="flex:1">초기화</button>' +
+      '<button class="btn" data-act="closeSheet" style="flex:1.4">결과 보기</button></div>';
+  openSheet(html, {title: '검색 · 필터'});
+}
+function refreshFilterChips() {
+  const upd = (id, isOn) => {
+    const box = $('#' + id);
+    if (!box) return;
+    $$('.chip', box).forEach(b => b.classList.toggle('on', isOn(b.dataset.v)));
+  };
+  upd('fltPeriod', v => UI.period === v);
+  upd('fltAge', v => UI.ageRange === v);
+  upd('fltTypes', v => UI.types.indexOf(v) >= 0);
+  upd('fltTopics', v => UI.topics.indexOf(v) >= 0);
+  upd('fltAttach', v => UI.attach === v);
+  const flags = $('#fltFlags');
+  if (flags) {
+    const bs = $$('.chip', flags);
+    if (bs[0]) bs[0].classList.toggle('on', UI.fav);
+    if (bs[1]) bs[1].classList.toggle('on', UI.later);
+  }
+  const c = $('#fltCount');
+  if (c) c.textContent = '조건에 맞는 기록 ' + filteredRecords().length + '건';
+  refreshList();
+}
+
+/* ---------- 주제 · 기간 ---------- */
+function openTopic(name) {
+  const topic = cleanTopic(name);
+  const list = sortRecords(state.records.filter(r => topicsOf(r).some(t => t.toLowerCase() === topic.toLowerCase())));
+  const byPeriod = {};
+  list.forEach(r => {
+    const k = r.date.slice(0, 4);
+    byPeriod[k] = (byPeriod[k] || 0) + 1;
+  });
+  const html =
+    '<div class="stats" style="margin-bottom:10px"><div class="stat"><b>' + list.length + '</b><span>기록</span></div>' +
+      '<div class="stat"><b>' + (list.length ? Object.keys(byPeriod).length : 0) + '</b><span>해</span></div>' +
+      '<div class="stat"><b>' + (list.length ? esc(fmtDateKo(list[0].date)) : '—') + '</b><span>최근</span></div></div>' +
+    '<div class="hint" style="margin-bottom:10px">' + Object.keys(byPeriod).sort().reverse().map(y => y + '년 ' + byPeriod[y] + '건').join(' · ') + '</div>' +
+    (list.length ? '<div class="timeline">' + list.map(r =>
+      '<div class="rcard" data-act="openRecord" data-id="' + esc(r.id) + '" style="padding:10px">' +
+        '<div class="thumb" style="width:56px;height:56px">' + thumbOf(r) + '</div>' +
+        '<div class="rbody"><div class="rtop"><span class="rdate">' + esc(fmtDate(r.date)) + (ageText(r.date) ? ' · ' + esc(ageText(r.date)) : '') + '</span>' + typeChip(r.type) + '</div>' +
+        '<h3 style="font-size:13.5px">' + esc(recTitle(r)) + '</h3>' +
+        (r.childSay ? '<p class="say" style="font-size:12px">“' + esc(r.childSay) + '”</p>' : '') + '</div></div>').join('') + '</div>'
+      : emptyBox('🍃', '이 주제의 기록이 아직 없어요.')) +
+    '<div class="sheet-foot"><button class="btn ghost" data-act="renameTopic" data-topic="' + esc(topic) + '">이름 정리</button>' +
+      '<button class="btn" data-act="collectionTopic" data-topic="' + esc(topic) + '">이 주제 모음집</button></div>';
+  openSheet(html, {title: '#' + esc(topic)});
+}
+async function renameTopic(oldName) {
+  const name = await askText('주제 이름 정리', '새 이름 (같은 이름이 있으면 합쳐져요)', oldName, '예: 로봇·기계');
+  if (name == null) return;
+  const t = cleanTopic(name);
+  if (!t) { toast('이름을 입력해 주세요.'); return; }
+  let changed = 0;
+  state.records.forEach(r => {
+    const ts = topicsOf(r);
+    if (ts.some(x => x.toLowerCase() === oldName.toLowerCase())) {
+      const next = ts.filter(x => x.toLowerCase() !== oldName.toLowerCase());
+      if (next.map(x => x.toLowerCase()).indexOf(t.toLowerCase()) < 0) next.push(t);
+      r.topics = next;
+      r.updatedAt = Date.now();
+      changed++;
+    }
+  });
+  save();
+  closeAllSheets();
+  render();
+  toast(changed + '건의 주제를 "' + t + '"로 정리했어요.');
+}
+function openPeriod(key) {
+  const mode = UI.periodMode;
+  const g = groupPeriods(mode).find(x => x.key === key);
+  if (!g) return;
+  const html = '<div class="hint" style="margin-bottom:10px">기록 ' + g.records.length + '건</div>' +
+    '<div class="timeline">' + g.records.map(r =>
+      '<div class="rcard" data-act="openRecord" data-id="' + esc(r.id) + '" style="padding:10px">' +
+        '<div class="thumb" style="width:56px;height:56px">' + thumbOf(r) + '</div>' +
+        '<div class="rbody"><div class="rtop"><span class="rdate">' + esc(fmtDate(r.date)) + '</span>' + typeChip(r.type) + '</div>' +
+        '<h3 style="font-size:13.5px">' + esc(recTitle(r)) + '</h3>' +
+        (r.childSay ? '<p class="say" style="font-size:12px">“' + esc(r.childSay) + '”</p>' : '') + '</div></div>').join('') + '</div>' +
+    '<div class="sheet-foot"><button class="btn" data-act="collectionPeriod" data-key="' + esc(key) + '">이 기간 모음집 만들기</button></div>';
+  openSheet(html, {title: g.label});
+}
+
+/* ---------- 모음집 (선택 PDF/인쇄) ---------- */
+function openCollection(prefill) {
+  prefill = prefill || {};
+  const topics = allTopics();
+  const dates = sortRecords(state.records).map(r => r.date);
+  const from = prefill.from || (dates.length ? dates[dates.length - 1] : '');
+  const to = prefill.to || dayKey();
+  const html =
+    '<div class="hint" style="margin-bottom:12px">기간과 주제를 고르면 사진·아이 원문·부모 메모를 담은 모음집을 미리 보고 인쇄하거나 PDF로 저장할 수 있어요. 출력물에는 “가족 작성 자료”라고 표시돼요.</div>' +
+    '<div class="row"><div class="field"><label class="lab">시작일</label><input class="input" id="cFrom" type="date" value="' + esc(from) + '"></div>' +
+    '<div class="field"><label class="lab">끝일</label><input class="input" id="cTo" type="date" value="' + esc(to) + '"></div></div>' +
+    '<div class="field"><label class="lab">주제</label><select class="select" id="cTopic"><option value="all">전체 주제</option>' +
+      topics.map(t => '<option value="' + esc(t.name) + '"' + (prefill.topic === t.name ? ' selected' : '') + '>#' + esc(t.name) + ' (' + t.count + ')</option>').join('') + '</select></div>' +
+    '<div class="field"><label class="lab">유형</label><select class="select" id="cType"><option value="all">전체 유형</option>' +
+      TYPES.map(t => '<option value="' + esc(t.id) + '"' + (prefill.type === t.id ? ' selected' : '') + '>' + t.emoji + ' ' + esc(t.id) + '</option>').join('') + '</select></div>' +
+    '<div class="field"><label class="lab">담을 내용</label><div class="tag-pick">' +
+      '<label class="chip"><input type="checkbox" id="cImg" checked style="margin-right:4px"> 사진</label>' +
+      '<label class="chip"><input type="checkbox" id="cSay" checked style="margin-right:4px"> 아이 원문</label>' +
+      '<label class="chip"><input type="checkbox" id="cNote" checked style="margin-right:4px"> 부모 메모</label>' +
+      '<label class="chip"><input type="checkbox" id="cVers" checked style="margin-right:4px"> 이어쓰기 과정</label>' +
+      '<label class="chip"><input type="checkbox" id="cFiles" style="margin-right:4px"> 파일 목록</label>' +
+    '</div></div>' +
+    '<div class="hint" id="cCount"></div>' +
+    '<div class="sheet-foot"><button class="btn ghost" data-act="closeSheet" style="flex:.8">취소</button>' +
+      '<button class="btn" data-act="previewCollection" style="flex:1.6">미리보기</button></div>';
+  openSheet(html, {title: '📄 모음집 만들기', onMount: () => {
+    const upd = () => {
+      const el = $('#cCount');
+      if (el) el.textContent = '담길 기록 ' + collectionRecords(readCollectionOpts()).length + '건';
+    };
+    ['cFrom', 'cTo', 'cTopic', 'cType'].forEach(id => { const el = $('#' + id); if (el) el.addEventListener('change', upd); });
+    upd();
+  }});
+}
+function readCollectionOpts() {
+  return {
+    from: formVal('cFrom'), to: formVal('cTo'),
+    topic: formVal('cTopic') || 'all', type: formVal('cType') || 'all',
+    img: !$('#cImg') || $('#cImg').checked, say: !$('#cSay') || $('#cSay').checked,
+    note: !$('#cNote') || $('#cNote').checked, vers: !$('#cVers') || $('#cVers').checked,
+    files: !!($('#cFiles') && $('#cFiles').checked),
+  };
+}
+function collectionRecords(o) {
+  return sortRecords(state.records).filter(r => {
+    if (o.from && r.date < o.from) return false;
+    if (o.to && r.date > o.to) return false;
+    if (o.topic && o.topic !== 'all' && !topicsOf(r).some(t => t.toLowerCase() === String(o.topic).toLowerCase())) return false;
+    if (o.type && o.type !== 'all' && r.type !== o.type) return false;
+    return true;
+  }).reverse();
+}
+function collectionHtml(list, o) {
+  const who = state.profile.childName ? state.profile.childName + '의' : '우리 아이의';
+  const range = (o.from ? fmtDate(o.from) : '처음') + ' ~ ' + (o.to ? fmtDate(o.to) : '오늘');
+  const topicTxt = (o.topic && o.topic !== 'all') ? ' · 주제 #' + o.topic : '';
+  const typeTxt = (o.type && o.type !== 'all') ? ' · 유형 ' + o.type : '';
+  const secs = list.map(r => {
+    const imgs = o.img ? mediaImages(r) : [];
+    const vers = o.vers ? arr(r.versions) : [];
+    return '<div class="pd-sec">' +
+      '<h3>' + esc(recTitle(r)) + '</h3>' +
+      '<div class="pd-meta">' + esc(fmtDate(r.date)) + (ageText(r.date) ? ' · ' + esc(ageText(r.date)) : '') + ' · ' + esc(typeMeta(r.type).emoji + ' ' + r.type) +
+        (topicsOf(r).length ? ' · ' + topicsOf(r).map(t => '#' + esc(t)).join(' ') : '') +
+        (r.helped !== 'unknown' ? ' · ' + esc(helpedMeta(r.helped).label) : '') + '</div>' +
+      (o.say && r.childSay ? '<div class="pd-say">아이 말 그대로<br>“' + esc(r.childSay) + '”</div>' : '') +
+      (o.note && r.parentNote ? '<div class="pd-memo">부모 메모 · ' + esc(r.parentNote) + '</div>' : '') +
+      (imgs.length ? '<div class="pd-imgs">' + imgs.map(m => '<img src="' + m.data + '" alt="">').join('') + '</div>' : '') +
+      (o.files && mediaCount(r) ? '<div class="pd-file">첨부: ' + arr(r.media).filter(m => m.kind !== 'image').map(m => esc(m.name)).join(', ') + '</div>' : '') +
+      (vers.length ? '<div class="pd-toc" style="margin-top:6px"><b style="font-size:11.5px">이어쓰기 ' + vers.length + '번</b>' +
+          vers.map((v, i) => '<div style="margin-top:4px;font-size:11.5px;color:#555">' + (i + 1) + '차 ' + esc(fmtDate(v.date)) +
+            (o.say && v.childSay ? ' — “' + esc(v.childSay) + '”' : '') +
+            (o.note && v.note ? ' <span style="color:#777">(' + esc(v.note) + ')</span>' : '') + '</div>').join('') + '</div>' : '') +
+    '</div>';
+  }).join('');
+  return '<div class="print-doc">' +
+    '<h1>' + esc(who) + ' 성장 기록 모음집</h1>' +
+    '<div class="pd-sub">' + esc(range) + esc(topicTxt) + esc(typeTxt) + ' · ' + list.length + '건 · 만든 날 ' + fmtDate(dayKey()) + '</div>' +
+    '<div class="pd-note">가족 작성 자료 · 이 자료는 가족이 직접 남긴 기록을 모은 것이며, 평가·점수·공식 증빙이 아닙니다.</div>' +
+    (list.length ? secs : '<p class="print-empty">조건에 맞는 기록이 없어요.</p>') +
+  '</div>';
+}
+function previewCollection() {
+  const o = readCollectionOpts();
+  const list = collectionRecords(o);
+  const root = $('#printRoot');
+  root.innerHTML = '<div class="print-bar"><b>📄 모음집 미리보기 · ' + list.length + '건</b>' +
+    '<button class="btn mini ghost" data-act="closePrint">닫기</button>' +
+    '<button class="btn mini" data-act="printNow">인쇄 / PDF 저장</button></div>' + collectionHtml(list, o);
+  root.classList.add('show');
+  root.setAttribute('aria-hidden', 'false');
+  closeAllSheets();
+  try { root.scrollTop = 0; } catch (e) {}
+}
+function closePrint() {
+  const root = $('#printRoot');
+  root.classList.remove('show');
+  root.innerHTML = '';
+  root.setAttribute('aria-hidden', 'true');
+}
+
+/* ---------- 서류함 ---------- */
+function openDocForm(id) {
+  const d = id ? state.docs.find(x => x.id === id) : null;
+  FORM.media = d ? arr(d.media).map(m => Object.assign({}, m)) : [];
+  const html =
+    '<div class="field"><label for="dName">문서명 *</label><input class="input" id="dName" value="' + esc(d ? d.name : '') + '" placeholder="예: 2026학년도 1학기 생활기록부 사본" maxlength="120"></div>' +
+    '<div class="row"><div class="field"><label for="dIssuer">발급기관</label><input class="input" id="dIssuer" value="' + esc(d ? d.issuer : '') + '" placeholder="예: OO유치원"></div>' +
+    '<div class="field"><label for="dIssuedAt">발급일</label><input class="input" id="dIssuedAt" type="date" value="' + esc(d ? d.issuedAt : '') + '"></div></div>' +
+    '<div class="row"><div class="field"><label for="dPeriod">해당 기간</label><input class="input" id="dPeriod" value="' + esc(d ? d.period : '') + '" placeholder="예: 2026.3~2026.8"></div>' +
+    '<div class="field"><label class="lab">상태</label><select class="select" id="dStatus">' + DOC_STATUS.map(s => '<option' + (d && d.status === s ? ' selected' : '') + '>' + s + '</option>').join('') + '</select></div></div>' +
+    '<div class="field"><label for="dLocation">실물 보관 위치</label><input class="input" id="dLocation" value="' + esc(d ? d.location : '') + '" placeholder="예: 거실 서류함 2번째 칸"></div>' +
+    '<div class="field"><label class="lab">파일 <span class="opt">PDF·사진</span></label>' + mediaButtonsHtml() + '</div>' +
+    '<div class="field"><label for="dNote">메모</label><textarea class="textarea" id="dNote" placeholder="재발급이 필요한 이유, 담당자 연락처 등">' + esc(d ? d.note : '') + '</textarea></div>' +
+    '<div class="sheet-foot"><button class="btn ghost" data-act="closeSheet" style="flex:.8">취소</button>' +
+      '<button class="btn" data-act="saveDoc" data-id="' + esc(d ? d.id : '') + '" style="flex:1.6">' + (d ? '수정 저장' : '서류 넣기') + '</button></div>';
+  openSheet(html, {title: d ? '서류 수정' : '＋ 서류 넣기', onMount: () => { renderFormMedia(); renderRecSlot(); }});
+}
+function saveDoc(id) {
+  const name = formVal('dName').trim();
+  if (!name) { toast('문서명을 적어 주세요.'); const el = $('#dName'); if (el) el.focus(); return; }
+  const draft = {
+    name, issuer: formVal('dIssuer').trim(), issuedAt: parseDay(formVal('dIssuedAt')) ? formVal('dIssuedAt') : '',
+    period: formVal('dPeriod').trim(), status: formVal('dStatus') || '보유중',
+    location: formVal('dLocation').trim(), note: formVal('dNote').trim(),
+    media: FORM.media.map(m => Object.assign({}, m)),
+  };
+  if (id) {
+    const d = state.docs.find(x => x.id === id);
+    if (!d) return;
+    Object.assign(d, draft, {updatedAt: Date.now()});
+    const fixed = sanitizeDoc(d);
+    if (fixed) Object.assign(d, fixed);
+  } else {
+    const doc = sanitizeDoc(Object.assign({id: uid('doc'), createdAt: Date.now()}, draft));
+    if (!doc) return;
+    state.docs.push(doc);
+  }
+  save();
+  closeAllSheets();
+  render();
+  toast(id ? '서류를 고쳤어요.' : '서류함에 넣었어요.');
+}
+function openDoc(id) {
+  const d = state.docs.find(x => x.id === id);
+  if (!d) return;
+  const html =
+    '<div style="display:flex;gap:7px;align-items:center;margin-bottom:8px">' + statusChip(d.status) +
+      (d.issuedAt ? '<span class="rdate">' + esc(fmtDate(d.issuedAt)) + ' 발급</span>' : '') + '</div>' +
+    '<h3 style="font-size:16px;margin-bottom:10px">' + esc(d.name) + '</h3>' +
+    '<table style="width:100%;font-size:12.5px;border-collapse:collapse">' +
+      (d.issuer ? '<tr><td style="color:var(--ink-3);padding:3px 0;width:88px">발급기관</td><td>' + esc(d.issuer) + '</td></tr>' : '') +
+      (d.period ? '<tr><td style="color:var(--ink-3);padding:3px 0">해당 기간</td><td>' + esc(d.period) + '</td></tr>' : '') +
+      (d.location ? '<tr><td style="color:var(--ink-3);padding:3px 0">실물 보관</td><td>' + esc(d.location) + '</td></tr>' : '') +
+    '</table>' +
+    (d.note ? '<div style="margin-top:10px;background:var(--bg-2);border-radius:10px;padding:10px;font-size:12.5px;white-space:pre-wrap">' + esc(d.note) + '</div>' : '') +
+    (arr(d.media).length ? '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">' + arr(d.media).map(mediaBlockHtml).join('') + '</div>' : '<p class="hint" style="margin-top:10px">첨부된 파일이 없어요.</p>') +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:16px">' +
+      '<button class="btn mini ghost" data-act="editDoc" data-id="' + esc(d.id) + '">수정</button>' +
+      '<button class="btn mini ghost" data-act="delDoc" data-id="' + esc(d.id) + '">삭제</button></div>';
+  openSheet(html, {title: '📁 서류'});
+}
+
+/* ---------- 내보내기 ---------- */
+function csvCell(v) {
+  const s = String(v == null ? '' : v).replace(/\r?\n/g, ' ');
+  return '"' + s.replace(/"/g, '""') + '"';
+}
+function recordsCsv() {
+  const head = ['날짜', '나이', '유형', '제목', '주제', '아이 말', '부모 메모', '혼자/도움', '첨부 수', '이어쓰기 수', '즐겨찾기', '나중에 정리'];
+  const rows = sortRecords(state.records).map(r => [r.date, ageText(r.date), r.type, recTitle(r), topicsOf(r).join(' '), r.childSay, r.parentNote, helpedMeta(r.helped).label, mediaCount(r), arr(r.versions).length, r.fav ? 'Y' : '', r.later ? 'Y' : ''].map(csvCell).join(','));
+  return '\uFEFF' + head.map(csvCell).join(',') + '\n' + rows.join('\n');
+}
+function docsCsv() {
+  const head = ['문서명', '발급기관', '해당기간', '발급일', '상태', '실물 보관 위치', '메모', '파일 수'];
+  const rows = state.docs.map(d => [d.name, d.issuer, d.period, d.issuedAt, d.status, d.location, d.note, arr(d.media).length].map(csvCell).join(','));
+  return '\uFEFF' + head.map(csvCell).join(',') + '\n' + rows.join('\n');
+}
+function archiveHtml(data, base) {
+  const rel = p => String(p || '').replace(base + '/', '');
+  const who = data.child && data.child.childName ? data.child.childName : '우리 아이';
+  const body = arr(data.records).map(r => {
+    const imgs = arr(r.media).filter(m => m.kind === 'image' && m.path);
+    const files = arr(r.media).filter(m => m.kind !== 'image' && m.path);
+    return '<section><h2>' + esc(r.title || r.date) + '</h2>' +
+      '<p class="meta">' + esc(r.date) + ' · ' + esc(r.type) + (arr(r.topics).length ? ' · ' + arr(r.topics).map(t => '#' + esc(t)).join(' ') : '') + '</p>' +
+      (r.childSay ? '<blockquote>' + esc(r.childSay) + '</blockquote>' : '') +
+      (r.parentNote ? '<p class="memo">부모 메모 · ' + esc(r.parentNote) + '</p>' : '') +
+      (imgs.length ? '<div class="imgs">' + imgs.map(m => '<img src="' + esc(rel(m.path)) + '" alt="">').join('') + '</div>' : '') +
+      (files.length ? '<p class="file">첨부: ' + files.map(m => '<a href="' + esc(rel(m.path)) + '">' + esc(m.name) + '</a>').join(', ') + '</p>' : '') +
+      (arr(r.versions).length ? '<ol>' + arr(r.versions).map(v => '<li>' + esc(v.date) + (v.childSay ? ' — “' + esc(v.childSay) + '”' : '') + (v.note ? ' (' + esc(v.note) + ')' : '') + '</li>').join('') + '</ol>' : '') +
+    '</section>';
+  }).join('');
+  const docs = arr(data.docs).map(d => '<li><b>' + esc(d.name) + '</b> · ' + esc(d.issuer || '') + ' · ' + esc(d.status) + (arr(d.media).length ? ' · 파일 ' + arr(d.media).filter(m => m.path).map(m => '<a href="' + esc(rel(m.path)) + '">' + esc(m.name) + '</a>').join(', ') : '') + '</li>').join('');
+  return '<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><title>' + esc(who) + ' 성장 기록</title>' +
+    '<style>body{font-family:system-ui,"Apple SD Gothic Neo",sans-serif;max-width:780px;margin:0 auto;padding:28px 18px;color:#2b2a26;line-height:1.6}h1{font-size:22px}section{border-top:1px solid #e6ded1;padding:16px 0}blockquote{margin:6px 0;background:#f3f8f5;border-left:3px solid #7fa99e;padding:8px 10px;white-space:pre-wrap}.memo{font-size:13px;color:#555}.meta{font-size:12px;color:#777}.imgs img{width:150px;height:150px;object-fit:cover;border-radius:6px;margin:4px 4px 0 0}.file{font-size:12px}</style></head><body>' +
+    '<h1>' + esc(who) + ' 성장 기록</h1>' +
+    '<p class="meta">내보낸 날 ' + esc(data.exportedAt) + ' · 기록 ' + arr(data.records).length + '건 · 서류 ' + arr(data.docs).length + '건 · <b>가족 작성 자료</b></p>' +
+    '<p>이 파일은 앱 없이도 읽을 수 있도록 만든 사본입니다. 사진·파일은 이 HTML 옆의 attachments·docs 폴더에 원본으로 들어 있어요.</p>' +
+    body + (docs ? '<h2 style="margin-top:24px">📁 서류함</h2><ul>' + docs + '</ul>' : '') +
+  '</body></html>';
+}
+function archiveMd(data) {
+  const who = (data.child && data.child.childName) || '우리 아이';
+  const out = ['# ' + who + ' 성장 기록', '', '- 내보낸 날: ' + data.exportedAt, '- 기록 ' + arr(data.records).length + '건 · 서류 ' + arr(data.docs).length + '건', '- 가족 작성 자료(평가·점수·공식 증빙 아님)', ''];
+  arr(data.records).forEach(r => {
+    out.push('## ' + (r.title || r.date));
+    out.push('');
+    out.push('- 날짜: ' + r.date + ' · 유형: ' + r.type + (arr(r.topics).length ? ' · 주제: ' + arr(r.topics).map(t => '#' + t).join(' ') : ''));
+    if (r.childSay) { out.push(''); out.push('> 아이 말 그대로'); out.push('> ' + String(r.childSay).replace(/\n/g, '\n> ')); }
+    if (r.parentNote) { out.push(''); out.push('**부모 메모** · ' + String(r.parentNote).replace(/\n/g, ' ')); }
+    const imgs = arr(r.media).filter(m => m.kind === 'image' && m.path);
+    if (imgs.length) { out.push(''); imgs.forEach(m => out.push('![' + (m.name || '사진') + '](' + String(m.path).replace(/^[^/]+\//, '') + ')')); }
+    const files = arr(r.media).filter(m => m.kind !== 'image' && m.path);
+    if (files.length) { out.push(''); out.push('첨부: ' + files.map(m => '[' + m.name + '](' + String(m.path).replace(/^[^/]+\//, '') + ')').join(', ')); }
+    if (arr(r.versions).length) {
+      out.push('');
+      out.push('**이어쓰기 ' + arr(r.versions).length + '번**');
+      arr(r.versions).forEach((v, i) => out.push((i + 1) + '. ' + v.date + (v.childSay ? ' — “' + v.childSay + '”' : '') + (v.note ? ' (' + v.note + ')' : '')));
+    }
+    out.push('');
+  });
+  if (arr(data.docs).length) {
+    out.push('---', '', '## 📁 서류함', '');
+    arr(data.docs).forEach(d => {
+      out.push('- **' + d.name + '** · ' + (d.issuer || '') + ' · ' + d.status + (d.period ? ' · ' + d.period : '') + (d.location ? ' · 보관: ' + d.location : ''));
+    });
+  }
+  return out.join('\n');
+}
+
+function readmeMd(data, base) {
+  return [
+    '# ' + ((data.child && data.child.childName) || '우리 아이') + ' 성장 기록 — 백업',
+    '',
+    '- 내보낸 날: ' + data.exportedAt,
+    '- 기록 ' + arr(data.records).length + '건 · 서류 ' + arr(data.docs).length + '건',
+    '- 이 자료는 가족이 직접 남긴 기록입니다(평가·점수·공식 증빙 아님).',
+    '',
+    '## 이 ZIP 안에 들어 있는 것',
+    '',
+    '| 파일 | 설명 |',
+    '|---|---|',
+    '| `data.json` | 전체 데이터(앱 복원용). 첨부는 아래 폴더 경로로 연결돼 있어요. |',
+    '| `records.csv` / `documents.csv` | 엑셀에서 바로 여는 표 |',
+    '| `archive.html` / `archive.md` | 앱 없이 브라우저·메모장으로 읽는 사본 |',
+    '| `attachments/`, `docs/` | 사진·음성·문서 **원본 파일** |',
+    '| `README.md` | 이 안내 |',
+    '',
+    '## 앱으로 복원하는 방법',
+    '',
+    '1. 성장 기록 앱을 엽니다.',
+    '2. `⚙️ 설정 → 💾 보관·백업 → ⬆ 복원 (JSON/ZIP)`을 누릅니다.',
+    '3. 이 ZIP 파일을 고르면 새 기록·이미 있는 기록 수를 먼저 보여 줍니다.',
+    '4. `새 항목만 병합`을 고르면 중복 ID는 건너뛰고 안전하게 합쳐요.',
+    '',
+    '## 그냥 읽는 방법',
+    '',
+    '- `archive.html`을 브라우저로 열면 사진과 글이 함께 보입니다(인터넷 필요 없음).',
+    '- `data.json`은 개발자용 전체 데이터입니다. 사진은 `data` 대신 `path`로 들어 있어 이 폴더의 파일을 가리켜요.',
+    '',
+    '## 보관 주의',
+    '',
+    '- 이 폴더에는 아이의 사진·음성·서류가 들어 있어요. 공유 링크나 공개 저장소에 올리지 마세요.',
+    '- 가족 방(클라우드)과 이 백업을 함께 두면 기기를 바꿔도 이어서 쓸 수 있어요.',
+  ].join('\n');
+}
+
+function exportBaseName() { return 'growth-archive-' + dayKey().replace(/-/g, ''); }
+
+async function exportZip() {
+  const base = exportBaseName();
+  toast('ZIP을 만드는 중이에요…', 1800);
+  await new Promise(r => setTimeout(r, 30));
+  const files = [];
+  let attachCount = 0;
+  const data = {
+    app: 'growth-archive', appVersion: APP_VERSION, format: 1,
+    exportedAt: new Date().toISOString(),
+    child: {childName: state.profile.childName, birthDate: state.profile.birthDate},
+    note: '가족 작성 자료 · 가족이 직접 남긴 기록의 사본',
+    records: [], docs: [],
+  };
+  const pushMedia = (m, dir, prefix) => {
+    const p = base + '/' + dir + '/' + prefix + '-' + fileSafe(m.name, 'file') + '.' + extOf(m);
+    const out = Object.assign({}, m, {path: p});
+    delete out.data;
+    if (m.data) { files.push({name: p, data: dataURLToBytes(m.data)}); attachCount++; }
+    return out;
+  };
+  state.records.forEach(r => {
+    const rec = Object.assign({}, r);
+    delete rec.versions;
+    rec.media = arr(r.media).map((m, i) => pushMedia(m, 'attachments', r.id + '/' + (i + 1)));
+    rec.versions = arr(r.versions).map((v, vi) => {
+      const cv = Object.assign({}, v);
+      cv.media = arr(v.media).map((m, i) => pushMedia(m, 'attachments', r.id + '/v' + (vi + 1) + '-' + (i + 1)));
+      return cv;
+    });
+    data.records.push(rec);
+  });
+  state.docs.forEach(d => {
+    const doc = Object.assign({}, d);
+    doc.media = arr(d.media).map((m, i) => pushMedia(m, 'docs', d.id + '/' + (i + 1)));
+    data.docs.push(doc);
+  });
+  const enc = new TextEncoder();
+  files.push({name: base + '/data.json', data: enc.encode(JSON.stringify(data, null, 2))});
+  files.push({name: base + '/records.csv', data: enc.encode(recordsCsv())});
+  files.push({name: base + '/documents.csv', data: enc.encode(docsCsv())});
+  files.push({name: base + '/archive.html', data: enc.encode(archiveHtml(data, base))});
+  files.push({name: base + '/archive.md', data: enc.encode(archiveMd(data))});
+  files.push({name: base + '/README.md', data: enc.encode(readmeMd(data, base))});
+  const blob = zipBuild(files);
+  downloadBlob(blob, base + '.zip');
+  toast('ZIP 백업을 만들었어요 · 파일 ' + files.length + '개 · 첨부 원본 ' + attachCount + '개 (' + bytesText(blob.size) + ')', 4200);
+}
+function exportJson() {
+  const payload = {app: 'growth-archive', appVersion: APP_VERSION, format: 1, exportedAt: new Date().toISOString(), data: state};
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type: 'application/json'});
+  downloadBlob(blob, exportBaseName() + '.json');
+  toast('JSON 백업을 내려받았어요 (' + bytesText(blob.size) + ')');
+}
+function importFile() {
+  const inp = $('#hiddenFile');
+  inp.value = '';
+  inp.accept = '.json,.zip,application/json,application/zip';
+  inp.onchange = async () => {
+    const f = inp.files && inp.files[0];
+    if (!f) return;
+    try { await restoreFrom(f); }
+    catch (e) { toast('복원하지 못했어요: ' + (e && e.message ? e.message : '파일을 확인해 주세요'), 4500); }
+    inp.value = '';
+  };
+  inp.click();
+}
+function guessMime(ext) {
+  return ({jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif', webm: 'audio/webm', mp3: 'audio/mpeg', m4a: 'audio/mp4', pdf: 'application/pdf'}[String(ext || '').toLowerCase()]) || 'application/octet-stream';
+}
+async function restoreFrom(file) {
+  let dataObj = null;
+  let entries = null;
+  if (/\.zip$/i.test(file.name) || file.type === 'application/zip') {
+    entries = await zipParse(file);
+    const key = Object.keys(entries).find(k => /(^|\/)data\.json$/.test(k));
+    if (!key) throw new Error('ZIP 안에 data.json이 없어요');
+    dataObj = JSON.parse(new TextDecoder().decode(entries[key]));
+  } else {
+    const text = await file.text();
+    dataObj = JSON.parse(text);
+  }
+  const pack = dataObj && dataObj.data ? dataObj.app === 'growth-archive' || dataObj.format ? dataObj.data : dataObj : dataObj;
+  const incoming = sanitize({
+    profile: pack.profile || (dataObj && dataObj.child ? {childName: dataObj.child.childName, birthDate: dataObj.child.birthDate} : {}),
+    settings: pack.settings || {},
+    records: arr(pack.records), docs: arr(pack.docs), updatedAt: Date.now(),
+  });
+  if (entries) {
+    const inline = m => {
+      if (!m || !m.path) return m;
+      const bytes = entries[m.path] || entries[Object.keys(entries).find(k => k.endsWith('/' + String(m.path).split('/').slice(-2).join('/'))) || ''];
+      if (!bytes) return null;
+      const ext = /\.([A-Za-z0-9]{1,6})$/.exec(m.path);
+      const mm = Object.assign({}, m, {data: bytesToDataURL(bytes, guessMime(ext ? ext[1] : ''))});
+      delete mm.path;
+      return mm;
+    };
+    incoming.records.forEach(r => {
+      r.media = arr(r.media).map(inline).filter(Boolean);
+      arr(r.versions).forEach(v => { v.media = arr(v.media).map(inline).filter(Boolean); });
+    });
+    incoming.docs.forEach(d => { d.media = arr(d.media).map(inline).filter(Boolean); });
+  }
+  const haveR = {}, haveD = {};
+  state.records.forEach(r => { haveR[r.id] = 1; });
+  state.docs.forEach(d => { haveD[d.id] = 1; });
+  const newR = incoming.records.filter(r => !haveR[r.id]);
+  const dupR = incoming.records.length - newR.length;
+  const newD = incoming.docs.filter(d => !haveD[d.id]);
+  const dupD = incoming.docs.length - newD.length;
+  const attCount = incoming.records.reduce((n, r) => n + arr(r.media).length + arr(r.versions).reduce((k, v) => k + arr(v.media).length, 0), 0) + incoming.docs.reduce((n, d) => n + arr(d.media).length, 0);
+  const who = incoming.profile.childName || (dataObj.child && dataObj.child.childName) || '';
+  const html =
+    '<div class="hint" style="margin-bottom:10px">' + (who ? esc(who) + '의 기록 · ' : '') + '파일에서 찾은 내용이에요. 먼저 무엇이 새로 들어오는지 확인하세요.</div>' +
+    '<div style="background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px">' +
+      '<div class="restore-item">📝 기록 <b>총 ' + incoming.records.length + '건</b><span class="cnt" style="color:var(--accent)">새로 ' + newR.length + ' · 중복 ' + dupR + '</span></div>' +
+      '<div class="restore-item">📁 서류 <b>총 ' + incoming.docs.length + '건</b><span class="cnt" style="color:var(--accent)">새로 ' + newD.length + ' · 중복 ' + dupD + '</span></div>' +
+      '<div class="restore-item">📎 첨부 파일 <b>' + attCount + '개</b><span class="cnt"></span></div>' +
+      '<div class="restore-item" style="color:var(--ink-3)">지금 이 기기: 기록 ' + state.records.length + '건 · 서류 ' + state.docs.length + '건</div>' +
+    '</div>' +
+    '<p class="hint" style="margin-top:10px"><b>새 항목만 병합</b>은 같은 ID의 기록을 건너뛰고 새 기록·서류만 더해요. <b>전체 덮어쓰기</b>는 이 기기의 기록·서류를 파일 내용으로 바꿉니다(되돌릴 수 없어요).</p>' +
+    '<div class="sheet-foot" style="flex-direction:column">' +
+      '<button class="btn" data-act="doMerge" style="width:100%">새 항목만 병합 (' + (newR.length + newD.length) + '건)</button>' +
+      '<div style="display:flex;gap:8px;width:100%"><button class="btn ghost" data-act="doRestoreAll" style="flex:1">전체 덮어쓰기</button>' +
+      '<button class="btn ghost" data-act="closeSheet" style="flex:1">취소</button></div>' +
+    '</div>';
+  window.__restore = {incoming, newR, newD};
+  openSheet(html, {title: '복원 미리보기', center: true});
+}
+function doMerge() {
+  const rd = window.__restore;
+  if (!rd) return;
+  rd.newR.forEach(r => state.records.push(r));
+  rd.newD.forEach(d => state.docs.push(d));
+  if (!state.profile.childName && rd.incoming.profile.childName) state.profile.childName = rd.incoming.profile.childName;
+  if (!state.profile.birthDate && rd.incoming.profile.birthDate) state.profile.birthDate = rd.incoming.profile.birthDate;
+  save();
+  closeAllSheets();
+  go('home');
+  toast('새 기록 ' + rd.newR.length + '건 · 서류 ' + rd.newD.length + '건을 합쳤어요.');
+  window.__restore = null;
+}
+async function doRestoreAll() {
+  const rd = window.__restore;
+  if (!rd) return;
+  const ok = await askConfirm('전체 덮어쓰기', '이 기기의 기록 ' + state.records.length + '건과 서류 ' + state.docs.length + '건이 파일 내용(' + rd.incoming.records.length + '건/' + rd.incoming.docs.length + '건)으로 바뀝니다. 되돌릴 수 없어요.', '덮어쓰기', true);
+  if (!ok) return;
+  const keepR = {}, keepD = {};
+  rd.incoming.records.forEach(r => { keepR[r.id] = 1; });
+  rd.incoming.docs.forEach(d => { keepD[d.id] = 1; });
+  state.records.forEach(r => { if (!keepR[r.id]) state.deleted.records[r.id] = Date.now(); });
+  state.docs.forEach(d => { if (!keepD[d.id]) state.deleted.docs[d.id] = Date.now(); });
+  state.records = rd.incoming.records;
+  state.docs = rd.incoming.docs;
+  if (rd.incoming.profile.childName) state.profile.childName = rd.incoming.profile.childName;
+  if (rd.incoming.profile.birthDate) state.profile.birthDate = rd.incoming.profile.birthDate;
+  save();
+  closeAllSheets();
+  go('home');
+  toast('파일 내용으로 복원했어요.');
+  window.__restore = null;
+}
+
+/* ---------- 설정 동작 ---------- */
+function saveProfile() {
+  const n = formVal('childName').trim().slice(0, 20);
+  const b = formVal('childBirth');
+  state.profile.childName = n;
+  state.profile.birthDate = parseDay(b) ? b : '';
+  save();
+  render();
+  toast('아이 정보를 저장했어요. 이 기기와 가족 방에만 들어가요.');
+}
+function joinRoom() {
+  const v = formVal('roomInput').trim();
+  if (!v) { toast('가족 방 코드를 입력해 주세요.'); return; }
+  if (PROTECTED_ROOMS.indexOf(v.toLowerCase()) >= 0) { toast('그 방은 다른 앱이 쓰고 있어요. 다른 코드를 지어 주세요.'); return; }
+  const ok = window.GASync.setRoom(v);
+  if (!ok) { toast('방 코드는 영문·숫자·-·_ 3~48자로 지어 주세요.'); return; }
+  render();
+  toast('가족 방 "' + window.GASync.room + '"에 연결했어요.');
+}
+function makeRoom() {
+  const code = 'growth-family-' + Math.random().toString(36).slice(2, 8);
+  window.GASync.setRoom(code);
+  render();
+  toast('가족 방 코드를 만들었어요: ' + code + ' — 가족에게만 알려 주세요.', 4200);
+}
+function copyRoom() {
+  const code = window.GASync.room;
+  if (!code) return;
+  const done = () => toast('가족 방 코드를 복사했어요.');
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(done, () => toast('복사가 막혔어요. 코드를 길게 눌러 복사해 주세요.'));
+  else toast('코드: ' + code);
+}
+async function leaveRoom() {
+  const ok = await askConfirm('가족 방 연결 끊기', '이 기기에서만 가족 방 연결을 끊어요. 가족 방에 올라간 기록과 이 기기 기록은 그대로 남습니다.', '연결 끊기');
+  if (!ok) return;
+  window.GASync.clearRoom();
+  render();
+  toast('가족 방 연결을 끊었어요. 기록은 이 기기에 그대로 있어요.');
+}
+function pushRoomNow() {
+  if (!window.GASync.room) return;
+  if (!hasMeaningfulData(state)) { toast('올릴 기록이 아직 없어요.'); return; }
+  window.GASync.uploadNow();
+  toast('가족 방으로 올렸어요.' + (window.GASync.status === 'offline' ? ' (오프라인 — 연결되면 자동으로 다시 올라가요)' : ''));
+}
+async function setPin() {
+  const v = await askText('서류함 PIN', '4자리 숫자를 정해 주세요', '', '예: 1234');
+  if (v == null) return;
+  if (!/^\d{4}$/.test(v)) { toast('4자리 숫자로 정해 주세요.'); return; }
+  state.settings.docPin = v;
+  state.settings.docsLocked = true;
+  UI.locked = true;
+  save();
+  render();
+  toast('서류함 PIN을 정했어요.');
+}
+function lockNow() { UI.locked = true; state.settings.docsLocked = true; save(); render(); toast('서류함을 잠갔어요.'); }
+async function clearPin() {
+  const ok = await askConfirm('PIN 없애기', '서류함 잠금을 없앨까요? 누구나 이 기기에서 서류함을 볼 수 있게 됩니다.', '없애기', true);
+  if (!ok) return;
+  state.settings.docPin = '';
+  state.settings.docsLocked = false;
+  UI.locked = false;
+  save(); render(); toast('PIN을 없앴어요.');
+}
+function unlockDocs() {
+  const v = formVal('pinInput');
+  if (v === state.settings.docPin) {
+    UI.locked = false;
+    render();
+    return;
+  }
+  const m = $('#pinMsg');
+  if (m) m.textContent = 'PIN이 맞지 않아요.';
+  const el = $('#pinInput'); if (el) el.value = '';
+}
+async function wipeAll() {
+  const ok = await askConfirm('모든 기록 지우기', '이 기기의 기록 ' + state.records.length + '건·서류 ' + state.docs.length + '건이 지워집니다. 먼저 [전체 내보내기(ZIP)]로 백업해 두세요. 되돌릴 수 없어요.', '지우기', true);
+  if (!ok) return;
+  const ok2 = await askConfirm('정말 지울까요?', '가족 방에 올라간 기록은 남아 있어요(연결된 경우). 이 기기에서는 사라집니다.', '모두 지우기', true);
+  if (!ok2) return;
+  const prof = Object.assign({}, state.profile);
+  state = defaults();
+  state.profile = prof;
+  save();
+  go('home');
+  toast('이 기기 기록을 모두 지웠어요.');
+}
+
+/* ---------- 동작 표 ---------- */
+const ACT = {
+  closeSheet,
+  go(a) { go(a && a.dataset ? a.dataset.view : 'home'); },
+  openQuick, openEdit, saveRecord,
+  pickType(a) { FORM.type = a.dataset.type; const el = $('#fTypePick'); if (el) el.innerHTML = typePickHtml(); },
+  pickHelped(a) { FORM.helped = a.dataset.help; const el = $('#fHelpPick'); if (el) el.innerHTML = helpedPickHtml(); },
+  addTopic() {
+    const el = $('#fTopicInput'); if (!el) return;
+    const t = cleanTopic(el.value);
+    if (!t) return;
+    if (FORM.topics.map(x => x.toLowerCase()).indexOf(t.toLowerCase()) < 0 && FORM.topics.length < 10) FORM.topics.push(t);
+    el.value = '';
+    const box = $('#topicPick'); if (box) box.outerHTML = topicPickHtml();
+  },
+  addTopicName(a) {
+    const t = cleanTopic(a.dataset.topic);
+    if (t && FORM.topics.map(x => x.toLowerCase()).indexOf(t.toLowerCase()) < 0 && FORM.topics.length < 10) FORM.topics.push(t);
+    const box = $('#topicPick'); if (box) box.outerHTML = topicPickHtml();
+  },
+  rmTopic(a) {
+    const t = a.dataset.topic;
+    FORM.topics = FORM.topics.filter(x => x !== t);
+    const box = $('#topicPick'); if (box) box.outerHTML = topicPickHtml();
+  },
+  pickPhoto() {
+    const inp = $('#hiddenFile'); inp.value = ''; inp.accept = 'image/*'; inp.multiple = true;
+    inp.onchange = () => { attachPhotos(inp.files); inp.value = ''; };
+    inp.click();
+  },
+  pickFile() {
+    const inp = $('#hiddenFile'); inp.value = ''; inp.accept = ''; inp.multiple = true;
+    inp.onchange = () => { attachFiles(inp.files); inp.value = ''; };
+    inp.click();
+  },
+  recStart() { startRecording(); },
+  recStop() { stopRecording(); },
+  recAgain() {
+    const last = FORM.media.filter(m => m.kind === 'audio').slice(-1)[0];
+    if (last) removeMedia(last.id);
+    startRecording();
+  },
+  rmMedia(a) { removeMedia(a.dataset.id); },
+  addVersion(a) { openVersion(a.dataset.id); },
+  saveVersion,
+  openRecord(a) { openRecord(a.dataset.id); },
+  openCompare(a) { openCompare(a.dataset.id); },
+  editRecord(a) { openEdit(a.dataset.id); },
+  async delRecord(a) {
+    const r = state.records.find(x => x.id === a.dataset.id);
+    if (!r) return;
+    const ok = await askConfirm('기록 지우기', '“' + esc(recTitle(r)) + '” 기록과 이어쓰기 ' + arr(r.versions).length + '개가 지워집니다.', '지우기', true);
+    if (!ok) return;
+    state.deleted.records[r.id] = Date.now();
+    state.records = state.records.filter(x => x.id !== r.id);
+    save(); closeAllSheets(); render(); toast('기록을 지웠어요.');
+  },
+  async delVersion(a) {
+    const r = state.records.find(x => x.id === a.dataset.id);
+    if (!r) return;
+    const ok = await askConfirm('이어쓰기 지우기', '이 이어쓰기 한 건만 지울까요?', '지우기', true);
+    if (!ok) return;
+    r.versions = arr(r.versions).filter(v => v.id !== a.dataset.ver);
+    r.updatedAt = Date.now();
+    save(); openRecord(r.id); toast('이어쓰기를 지웠어요.');
+  },
+  toggleFav(a) {
+    const r = state.records.find(x => x.id === a.dataset.id);
+    if (!r) return;
+    r.fav = !r.fav; r.updatedAt = Date.now();
+    save(); refreshList();
+    const d = state.records.find(x => x.id === a.dataset.id);
+    if (d && d.fav) toast('즐겨찾기에 넣었어요.');
+  },
+  toggleLater(a) {
+    const r = state.records.find(x => x.id === a.dataset.id);
+    if (!r) return;
+    r.later = !r.later; r.updatedAt = Date.now();
+    save(); refreshList();
+    if (UI.view === 'home' && $('.overlay')) openRecord(r.id);
+    toast(r.later ? '나중에 정리할 기록으로 표시했어요.' : '표시를 풀었어요.');
+  },
+  toggleType(a) {
+    const t = a.dataset.type;
+    const i = UI.types.indexOf(t);
+    if (i >= 0) UI.types.splice(i, 1); else UI.types.push(t);
+    refreshList();
+  },
+  toggleFavFilter() { UI.fav = !UI.fav; refreshList(); },
+  toggleLaterFilter() { UI.later = !UI.later; refreshList(); },
+  toggleAttach() { UI.attach = UI.attach === 'yes' ? 'all' : 'yes'; refreshList(); },
+  resetFilters() {
+    resetFilters();
+    const q = $('#q'); if (q) q.value = '';
+    refreshFilterChips();
+  },
+  openFilter,
+  fltPeriod(a) { UI.period = a.dataset.v; refreshFilterChips(); },
+  fltAge(a) { UI.ageRange = a.dataset.v; refreshFilterChips(); },
+  fltType(a) {
+    const t = a.dataset.v; const i = UI.types.indexOf(t);
+    if (i >= 0) UI.types.splice(i, 1); else UI.types.push(t);
+    refreshFilterChips();
+  },
+  fltTopic(a) {
+    const t = a.dataset.v; const i = UI.topics.indexOf(t);
+    if (i >= 0) UI.topics.splice(i, 1); else UI.topics.push(t);
+    refreshFilterChips();
+  },
+  fltAttach(a) { UI.attach = a.dataset.v; refreshFilterChips(); },
+  fltFav() { UI.fav = !UI.fav; refreshFilterChips(); },
+  fltLater() { UI.later = !UI.later; refreshFilterChips(); },
+  mvTab(a) { UI.mv = a.dataset.mv; render(); },
+  periodMode(a) { UI.periodMode = a.dataset.mode; render(); },
+  openTopic(a) { openTopic(a.dataset.topic); },
+  openPeriod(a) { openPeriod(a.dataset.key); },
+  renameTopic(a) { renameTopic(a.dataset.topic); },
+  openCollection(a) {
+    const pre = {};
+    if (a && a.dataset.topic) pre.topic = a.dataset.topic;
+    openCollection(pre);
+  },
+  collectionTopic(a) { openCollection({topic: a.dataset.topic}); },
+  collectionPeriod(a) {
+    const g = groupPeriods(UI.periodMode).find(x => x.key === a.dataset.key);
+    if (!g) return;
+    const dates = g.records.map(r => r.date).sort();
+    openCollection({from: dates[0], to: dates[dates.length - 1]});
+  },
+  previewCollection, closePrint() { closePrint(); },
+  printNow() { closePrint(); setTimeout(() => { try { window.print(); } catch (e) {} }, 80); },
+  openDocForm(a) { openDocForm(a && a.dataset.id ? a.dataset.id : ''); },
+  saveDoc(a) { saveDoc(a.dataset.id || ''); },
+  openDoc(a) { openDoc(a.dataset.id); },
+  editDoc(a) { openDocForm(a.dataset.id); },
+  async delDoc(a) {
+    const d = state.docs.find(x => x.id === a.dataset.id);
+    if (!d) return;
+    const ok = await askConfirm('서류 지우기', '“' + esc(d.name) + '” 서류와 첨부 ' + arr(d.media).length + '개를 지울까요?', '지우기', true);
+    if (!ok) return;
+    state.deleted.docs[d.id] = Date.now();
+    state.docs = state.docs.filter(x => x.id !== d.id);
+    save(); closeAllSheets(); render(); toast('서류를 지웠어요.');
+  },
+  unlockDocs() { unlockDocs(); },
+  docStatus(a) { UI.docStatus = a.dataset.status; render(); },
+  saveProfile, joinRoom, makeRoom, copyRoom, leaveRoom,
+  pushNow() { pushRoomNow(); },
+  pullNow() { window.GASync.downloadNow(); },
+  setPin, lockNow, clearPin,
+  exportZip() { exportZip(); },
+  exportJson() { exportJson(); },
+  importFile() { importFile(); },
+  doMerge() { doMerge(); },
+  doRestoreAll() { doRestoreAll(); },
+  wipeAll() { wipeAll(); },
+  goSettings() { go('settings'); },
+};
+
+/* ---------- 이벤트 ---------- */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-act]');
+  if (!a) return;
+  const fn = ACT[a.dataset.act];
+  if (!fn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  try { fn(a); } catch (err) { if (window.console) console.error(err); }
+});
+document.addEventListener('input', e => {
+  if (e.target && e.target.id === 'q') {
+    UI.q = e.target.value;
+    refreshList();
+  }
+  if (e.target && e.target.id === 'docQ') {
+    UI.docQ = e.target.value;
+    const box = $('#docList');
+    if (box) {
+      const q = UI.docQ.trim().toLowerCase();
+      const list = state.docs.slice().sort((a, b) => ((b.issuedAt || b.createdAt) > (a.issuedAt || a.createdAt) ? 1 : -1)).filter(d => {
+        if (UI.docStatus !== 'all' && d.status !== UI.docStatus) return false;
+        if (!q) return true;
+        return [d.name, d.issuer, d.period, d.note, d.location].join(' ').toLowerCase().indexOf(q) >= 0;
+      });
+      box.innerHTML = list.length ? '<div class="period-list">' + list.map(docCardHtml).join('') + '</div>' : emptyBox('🍂', '조건에 맞는 서류가 없어요.');
+    }
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.target && e.target.id === 'fTopicInput' && e.key === 'Enter') { e.preventDefault(); ACT.addTopic(); }
+  if (e.target && e.target.id === 'pinInput' && e.key === 'Enter') { e.preventDefault(); unlockDocs(); }
+  if (e.key === 'Enter' && e.target && e.target.classList && e.target.classList.contains('rcard')) {
+    e.preventDefault();
+    const id = e.target.dataset.id;
+    if (id) openRecord(id);
+  }
+  if (e.key === 'Escape') {
+    if ($('#printRoot').classList.contains('show')) closePrint();
+    else if (sheetStack.length) closeSheet();
+  }
+});
+
+
+/* ===== app6_boot.js ===== */
+/* =====================================================================
+   6. 시작 — 로컬 기록 불러오기, 가족 방 연결, 첫 화면
+   ===================================================================== */
+function boot() {
+  loadLocal();
+  Sync.device = deviceId();
+  Sync.room = loadRoom();
+  UI.locked = !!state.settings.docPin;
+  render();
+  if (Sync.room) connect();
+  else setSyncStatus('local');
+  UI.booted = true;
+  /* 창을 다시 열었을 때 나이가 바뀌었으면 머리말만 갱신 */
+  try {
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && UI.booted) {
+        applyBrand();
+        if (window.GASync && window.GASync.room && window.GASync.status === 'offline') window.GASync.connect();
+      }
+    });
+  } catch (e) {}
+}
+window.__ga = {
+  get state() { return state; },
+  get UI() { return UI; },
+  set state(v) { state = sanitize(v); },
+  save, render, go, openQuick, openRecord, openVersion, openDoc, openDocForm,
+  exportZip, exportJson, restoreFrom, doMerge, doRestoreAll,
+  filteredRecords, groupPeriods, allTopics, collectionRecords, collectionHtml,
+  sanitize, defaults, sync: () => window.GASync, FORM,
+  version: APP_VERSION,
+};
+boot();
+</script>
+</body>
+</html>
