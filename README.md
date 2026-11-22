@@ -75,8 +75,8 @@
 ```sh
 python3 work/growth-archive/build.py        # src → index.html 한 파일
 sh work/growth-archive/deploy.sh            # main + gh-pages 푸시
-python3 work/growth-archive/tests/test_app.py          # 기능 132항목
-python3 work/growth-archive/tests/test_sync_guard.py   # 동기화 49항목
+python3 work/growth-archive/tests/test_app.py          # 기능 136항목
+python3 work/growth-archive/tests/test_sync_guard.py   # 동기화 54항목
 ```
 
 기술 구조·데이터 모델·동기화 안전장치·한계는 **`HANDOFF.md`** 를 보세요.

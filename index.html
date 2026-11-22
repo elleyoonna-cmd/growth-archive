@@ -803,6 +803,7 @@ let sheetStack = [];
 function openSheet(html, opts) {
   opts = opts || {};
   closeAllSheets();
+  if (typeof cancelRecording === 'function') cancelRecording();
   const wrap = document.createElement('div');
   wrap.className = 'overlay' + (opts.center ? ' center' : '');
   wrap.innerHTML = '<div class="sheet" role="dialog" aria-modal="true" aria-label="' + esc(opts.title || '') + '">' +
@@ -817,10 +818,15 @@ function openSheet(html, opts) {
   return wrap;
 }
 function closeSheet() {
+  if (typeof cancelRecording === 'function') cancelRecording();
   const w = sheetStack.pop();
   if (w) w.remove();
 }
-function closeAllSheets() { sheetStack.forEach(w => w.remove()); sheetStack = []; }
+function closeAllSheets() {
+  if (typeof cancelRecording === 'function') cancelRecording();
+  sheetStack.forEach(w => w.remove());
+  sheetStack = [];
+}
 function sheetShell(title, bodyHtml, footHtml, opts) {
   return openSheet(bodyHtml + (footHtml ? '<div class="sheet-foot">' + footHtml + '</div>' : ''), Object.assign({title}, opts || {}));
 }
@@ -1081,6 +1087,8 @@ function syncPayload() {
 function hasMeaningfulData(o) {
   const s = (o && typeof o === 'object') ? o : state;
   if (arr(s.records).length || arr(s.docs).length) return true;
+  const del = (s.deleted && typeof s.deleted === 'object') ? s.deleted : {};
+  if (Object.keys(del.records || {}).length || Object.keys(del.docs || {}).length) return true;
   if (s.profile && String(s.profile.childName || '').trim()) return true;
   if (s.profile && s.profile.birthDate) return true;
   return false;
@@ -1143,6 +1151,22 @@ function applyRemote(remote, force) {
   let grew = false;
   try {
     const remoteClean = sanitize({profile: data.profile, settings: data.settings, records: data.records, docs: data.docs, deleted: data.deleted, updatedAt: at});
+    if (force) {
+      const keepName = state.profile.childName || remoteClean.profile.childName;
+      const keepBirth = state.profile.birthDate || remoteClean.profile.birthDate;
+      state = sanitize({
+        v: 1,
+        profile: {childName: keepName, birthDate: keepBirth},
+        settings: Object.assign({}, remoteClean.settings, state.settings.docPin ? {docPin: state.settings.docPin} : {}),
+        records: remoteClean.records, docs: remoteClean.docs, deleted: remoteClean.deleted,
+        updatedAt: Math.max(num(state.updatedAt, 0), at),
+      });
+      persist();
+      if (typeof render === 'function') render();
+      Sync.applying = false;
+      Sync.lastAt = at;
+      return true;
+    }
     const tombR = mergeTomb(state.deleted.records, remoteClean.deleted.records);
     const tombD = mergeTomb(state.deleted.docs, remoteClean.deleted.docs);
     const localIds = state.records.map(r => r.id).sort().join(',') + '|' + state.docs.map(d => d.id).sort().join(',');
@@ -1435,7 +1459,7 @@ async function attachFiles(files) {
 }
 
 /* ---------- 녹음 (버튼을 누를 때만) ---------- */
-const REC = {mr: null, chunks: [], stream: null, t0: 0, timer: null, active: false, lastId: ''};
+const REC = {mr: null, chunks: [], stream: null, t0: 0, timer: null, active: false, lastId: '', cancel: false};
 
 function recSupported() {
   return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
@@ -1472,6 +1496,7 @@ async function startRecording() {
     toast('마이크를 쓸 수 없어요(권한 거부). 사진이나 글로 남겨 주세요.', 4200);
     return;
   }
+  if (!$('#recSlot')) { stopMic(); return; }   /* 기다리는 사이 시트를 닫았으면 녹음하지 않는다 */
   try {
     REC.chunks = [];
     REC.mr = new MediaRecorder(REC.stream);
@@ -1482,6 +1507,7 @@ async function startRecording() {
   }
   REC.mr.ondataavailable = ev => { if (ev.data && ev.data.size) REC.chunks.push(ev.data); };
   REC.mr.onstop = async () => {
+    if (REC.cancel) { REC.cancel = false; stopMic(); REC.active = false; clearInterval(REC.timer); renderRecSlot(); return; }
     const dur = Math.round((Date.now() - REC.t0) / 1000);
     const type = (REC.mr && REC.mr.mimeType) || 'audio/webm';
     const blob = new Blob(REC.chunks, {type});
@@ -1515,6 +1541,14 @@ async function startRecording() {
 function stopMic() {
   try { REC.stream && REC.stream.getTracks().forEach(t => t.stop()); } catch (e) {}
   REC.stream = null;
+}
+function cancelRecording() {
+  if (!REC.active) return;
+  REC.cancel = true;
+  try { if (REC.mr && REC.mr.state !== 'inactive') REC.mr.stop(); } catch (e) {}
+  stopMic();
+  clearInterval(REC.timer);
+  REC.active = false;
 }
 function stopRecording() {
   if (REC.mr && REC.active && REC.mr.state !== 'inactive') {
@@ -2214,7 +2248,7 @@ function openRecord(id) {
       '<button class="btn mini ghost" data-act="editRecord" data-id="' + esc(r.id) + '">수정</button>' +
       '<button class="btn mini ghost" data-act="delRecord" data-id="' + esc(r.id) + '">삭제</button>' +
     '</div>';
-  openSheet(html, {title: ''});
+  openSheet(html, {title: '기록 상세'});
 }
 function openCompare(id) {
   const r = state.records.find(x => x.id === id);
@@ -3097,7 +3131,7 @@ window.__ga = {
   save, render, go, openQuick, openRecord, openVersion, openDoc, openDocForm,
   exportZip, exportJson, restoreFrom, doMerge, doRestoreAll,
   filteredRecords, groupPeriods, allTopics, collectionRecords, collectionHtml,
-  sanitize, defaults, sync: () => window.GASync, FORM,
+  sanitize, defaults, sync: () => window.GASync, FORM, rec: () => REC,
   version: APP_VERSION,
 };
 boot();

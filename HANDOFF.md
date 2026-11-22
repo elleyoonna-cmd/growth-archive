@@ -211,7 +211,7 @@ growth-archive-YYYYMMDD/
 export LD_LIBRARY_PATH=/workspace/.deblibs/usr/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 python3 work/growth-archive/tests/make_fixtures.py     # 가상 사진·PDF 생성(필요 시)
 python3 work/growth-archive/tests/test_app.py          # 132항목
-python3 work/growth-archive/tests/test_sync_guard.py   # 49항목 (임시 방 pw-growth-*)
+python3 work/growth-archive/tests/test_sync_guard.py   # 54항목 (임시 방 pw-growth-*)
 ```
 
 검증 범위:
@@ -228,7 +228,7 @@ python3 work/growth-archive/tests/test_sync_guard.py   # 49항목 (임시 방 pw
 - 보호 방 차단, 큰 파일 안내, 녹음 미지원 대체 안내, 가짜 마이크 녹음(시작/표시/미리듣기/다시 녹음)
 - PC 반응형, 콘솔·페이지 에러 0건, 코드 내 실제 가족 정보 없음
 
-최근 결과: **test_app 132/132 · test_sync_guard 49/49 통과**, 콘솔 에러 0건.
+최근 결과: **test_app 136/136 · test_sync_guard 54/54 통과**, 콘솔 에러 0건.
 
 ---
 
@@ -237,7 +237,7 @@ python3 work/growth-archive/tests/test_sync_guard.py   # 49항목 (임시 방 pw
 1. **인증 없음** — 방 코드를 아는 사람이 곧 가족입니다. RTDB 규칙이 공개 읽기/쓰기라면 코드는 충분히 길고 추측 불가능해야 합니다(예: `growth-family-x7k2m9`). 코드를 바꾸면 기존 방 데이터는 그대로 남습니다.
 2. **PIN은 암호화가 아님**(7절 참조). 필요 시 WebCrypto AES-GCM + PBKDF2로 `docs`만 암호화하는 확장을 권합니다.
 3. **첨부 용량** — RTDB 동기화는 사진 수십 장 규모에 적합합니다. 장기 보관은 ZIP 내보내기와 함께 운용하고, 4.2MB 게이지가 넘으면 정리를 안내합니다. 대용량화하려면 Firebase Storage/Supabase Storage로 옮기는 개편이 필요합니다.
-4. **음성** — `MediaRecorder` 지원 브라우저에서 최대 90초. iOS Safari는 webm 대신 mp4로 녹음될 수 있어 `mime`을 그대로 저장합니다.
+4. **음성** — `MediaRecorder` 지원 브라우저에서 최대 90초. iOS Safari는 webm 대신 mp4로 녹음될 수 있어 `mime`을 그대로 저장합니다. 녹음 도중 시트를 닫거나 화면을 벗어나면 마이크를 끄고 그 녹음은 저장하지 않습니다.
 5. **ZIP** — `stored` 방식이라 압축률은 없습니다(사진은 이미 압축됨). 대용량이면 `CompressionStream('deflate-raw')`를 빌더에도 붙일 수 있습니다.
 6. **아이 계정 확장** — 지금은 부모 공용. 아이가 자라 직접 쓰게 하려면 방 코드 대신 계정·권한(읽기/쓰기/서류함) 계층이 필요합니다.
 7. **다중 아이** — 현재 state는 한 아이 기준. 둘째를 위해 `children[]`로 확장하려면 `records.childId`를 추가하고 필터에 아이 선택을 넣습니다(마이그레이션: 기존 기록은 첫 아이).
