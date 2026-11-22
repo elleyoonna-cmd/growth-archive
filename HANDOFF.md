@@ -3,7 +3,7 @@
 아이의 말·생각·탐구 과정·작품·관심사·공식서류를 **가족이 함께** 쌓는 비공개 웹앱입니다.
 “찍고 한 줄 적고 태그만 고르면, 나중에 주제별·시기별로 저절로 묶이는 타임라인”이 목표입니다.
 
-- 라이브: `https://elleyoonna-cmd.github.io/growth-archive/` (저장소·Pages 준비 후)
+- 라이브: **https://elleyoonna-cmd.github.io/growth-archive/** (2026-11-22 배포·검증 완료)
 - 저장소: `elleyoonna-cmd/growth-archive`
 - 한 파일 앱: `index.html` 하나(HTML+CSS+JS 전부) + PWA 파일(`manifest.webmanifest`, 아이콘)
 - 검색엔진 차단: `<meta name="robots" content="noindex, nofollow">`
@@ -212,6 +212,7 @@ export LD_LIBRARY_PATH=/workspace/.deblibs/usr/usr/lib/x86_64-linux-gnu:$LD_LIBR
 python3 work/growth-archive/tests/make_fixtures.py     # 가상 사진·PDF 생성(필요 시)
 python3 work/growth-archive/tests/test_app.py          # 132항목
 python3 work/growth-archive/tests/test_sync_guard.py   # 54항목 (임시 방 pw-growth-*)
+python3 work/growth-archive/tests/test_live.py         # 라이브 26항목 (배포 후)
 ```
 
 검증 범위:
@@ -228,7 +229,7 @@ python3 work/growth-archive/tests/test_sync_guard.py   # 54항목 (임시 방 pw
 - 보호 방 차단, 큰 파일 안내, 녹음 미지원 대체 안내, 가짜 마이크 녹음(시작/표시/미리듣기/다시 녹음)
 - PC 반응형, 콘솔·페이지 에러 0건, 코드 내 실제 가족 정보 없음
 
-최근 결과: **test_app 136/136 · test_sync_guard 54/54 통과**, 콘솔 에러 0건.
+최근 결과: **test_app 136/136 · test_sync_guard 54/54 · 라이브 26/26 통과**, 콘솔 에러 0건.
 
 ---
 
@@ -245,6 +246,14 @@ python3 work/growth-archive/tests/test_sync_guard.py   # 54항목 (임시 방 pw
 9. **충돌 해결 범위** — 기록·서류는 항목 단위 합집합으로 보존되지만, 같은 기록을 두 기기에서 동시에 고친 경우에는 `updatedAt`이 더 새로운 쪽이 이깁니다(필드 단위 병합 아님). 프로필·설정은 이 기기 우선입니다.
 
 ---
+
+## 10-1. 배포 상태 (2026-11-22)
+
+- 저장소: `elleyoonna-cmd/growth-archive` (public) · `main` = `gh-pages` = 배포 파일
+- Pages: `gh-pages` 브랜치 `/` 서빙, HTTPS 강제
+- 라이브 검증: HTTP 200, 4탭, noindex, manifest 200, 사진 기록 저장, 이어쓰기, 주제 집계, 모음집 "가족 작성 자료", ZIP(data.json·archive.html/md·첨부·README), **2기기 실시간 동기화·삭제 전파**, 임시 방 생성/삭제, PC 레이아웃, 콘솔 에러 0건 — 26/26 통과.
+
+> 저장소 생성 권한이 GitHub 연결에 없어(`403 Resource not accessible by integration`) 사용자가 저장소를 직접 만들었고, 그 뒤 `deploy.sh`로 푸시·Pages 활성화까지 완료했습니다. 새 저장소를 만들 때도 같은 절차입니다.
 
 ## 11. 개인정보·보안 원칙 (반드시 유지)
 
